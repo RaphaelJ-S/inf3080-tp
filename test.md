@@ -1,3 +1,0 @@
-
-Bonjours
-Au revoir
