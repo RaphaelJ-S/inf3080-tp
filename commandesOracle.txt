@@ -1,0 +1,7 @@
+// Pour afficher toutes les tables dans la BD
+select table_name from user_tables;
+
+//Pour afficher les attributs d'une table
+describe [nom de la table || nom de la view];
+
+
