@@ -9,7 +9,7 @@ ADD CONSTRAINT typeCarte_Valide CHECK
 (typeCarte IN ('VISA', 'Master Card', 'American Express'));
 
 ALTER TABLE CommandeProduit
-ADD CONSTRAINT nbrItems_Valide CHECK (nbrItems >=0 );
+ADD CONSTRAINT nbrItems_Valide CHECK (nbrItems >=0); 
 
 ALTER TABLE Fournisseur
 ADD CONSTRAINT typeFourn_Valide CHECK

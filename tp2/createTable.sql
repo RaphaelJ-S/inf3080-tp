@@ -1,5 +1,6 @@
 CREATE TABLE Produit(
   numReference number(5) not null,
+  typeProduit number(5) not null,
   description varchar2(20) not null,
   preFix varchar2(10) not null,
   prixVente number(10,2) not null,
