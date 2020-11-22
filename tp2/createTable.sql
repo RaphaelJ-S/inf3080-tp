@@ -43,8 +43,8 @@ CREATE TABLE CommandeProduit(
   numCommande number(20) not null,
   nbrItems number(4) not null,
   primary key(numReference, numCommande),
-  foreign key(numReference) references Produit,
-  foreign key(numCommande) references Commande
+  foreign key(numReference) references Produit ON DELETE CASCADE,
+  foreign key(numCommande) references Commande ON DELETE CASCADE
 );  
 
 CREATE TABLE Individu(
@@ -53,7 +53,7 @@ CREATE TABLE Individu(
   motDePasse varchar2(14) not null,
   codePostal varchar2(7) not null,
   primary key(codeInd),
-  foreign key(codePostal) references Adresse
+  foreign key(codePostal) references Adresse ON DELETE CASCADE
 );
 
 CREATE TABLE ModificationPrix (
@@ -61,7 +61,7 @@ CREATE TABLE ModificationPrix (
   dateMod date not null,
   nouvPrix number(10,2) not null,
   numReference number(20) not null,
-  foreign key(numReference) references Produit,
+  foreign key(numReference) references Produit ON DELETE CASCADE,
   primary key(numMod)
 );
 
@@ -70,7 +70,7 @@ CREATE TABLE Fournisseur(
   typeFourn varchar2(50) not null,
   attribut varchar2(50) not null,
   primary key(codeFourn),
-  foreign key(codeFourn) references Individu
+  foreign key(codeFourn) references Individu ON DELETE CASCADE
 );
 
 CREATE TABLE Client(
@@ -80,7 +80,7 @@ CREATE TABLE Client(
   qualite varchar2(50) not null,
   etatCompte varChar(10) not null,
   primary key(codeClient),
-  foreign key(codeClient) references Individu
+  foreign key(codeClient) references Individu ON DELETE CASCADE
 );
 
 CREATE TABLE ProduitFournisseur(
@@ -88,8 +88,8 @@ CREATE TABLE ProduitFournisseur(
   numReference number(20) not null,
   ordrePrio number(1) not null,
   primary key(codeFourn, numReference),
-  foreign key(codeFourn) references Fournisseur,
-  foreign key(numReference) references Produit
+  foreign key(codeFourn) references Fournisseur ON DELETE CASCADE,
+  foreign key(numReference) references Produit ON DELETE CASCADE
 );
 
 CREATE TABLE Facture(
@@ -101,7 +101,7 @@ CREATE TABLE Facture(
   dateLivraison date not null,
   codeClient number(20),
   primary key(numFacture),
-  foreign key(codeClient) references Client
+  foreign key(codeClient) references Client ON DELETE CASCADE
 );
 
 CREATE TABLE Exemplaire (
@@ -109,8 +109,8 @@ CREATE TABLE Exemplaire (
   numReference number(20) not null,
   numFacture number(20) not null,
   primary key(codeZebre),
-  foreign key(numReference) references Produit,
-  foreign key(numFacture) references Facture
+  foreign key(numReference) references Produit ON DELETE CASCADE,
+  foreign key(numFacture) references Facture ON DELETE CASCADE
 );
 
 CREATE TABLE CommandeFacture(
@@ -119,8 +119,8 @@ CREATE TABLE CommandeFacture(
   nbrItems number(4) not null,
   numReference number(20) not null,
   primary key(numCommande, numFacture),
-  foreign key(numCommande) references Commande,
-  foreign key(numFacture) references Facture
+  foreign key(numCommande) references Commande ON DELETE CASCADE,
+  foreign key(numFacture) references Facture ON DELETE CASCADE
 );
 
 CREATE TABLE Paiements(
@@ -132,7 +132,7 @@ CREATE TABLE Paiements(
   numCheque number(20),
   numCarte number(16),
   primary key(numPaiement),
-  foreign key(numFacture) references Facture,
-  foreign key(numCheque) references Cheque,
-  foreign key(numCarte) references CarteCredit
+  foreign key(numFacture) references Facture ON DELETE CASCADE,
+  foreign key(numCheque) references Cheque ON DELETE CASCADE,
+  foreign key(numCarte) references CarteCredit ON DELETE CASCADE
 );

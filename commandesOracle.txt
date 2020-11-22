@@ -9,3 +9,6 @@ select trigger_name from user_triggers;
 
 //Pour afficher les noms des sequences dans la BD
 select sequence_name from user_sequences;
+
+//Pour contrôler l'affichage des données
+set linesize 200(par exemple)
