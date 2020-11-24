@@ -1,2 +1,0 @@
-@ deleteTable.sql
-@ deleteSequence.sql
