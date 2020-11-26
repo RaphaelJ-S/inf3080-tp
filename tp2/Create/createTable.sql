@@ -123,7 +123,7 @@ CREATE TABLE CommandeFacture(
   foreign key(numFacture) references Facture ON DELETE CASCADE
 );
 
-CREATE TABLE Paiements(
+CREATE TABLE Paiement(
   numPaiement number(20) not null,
   montant number(10,2) not null,
   datePaiement date not null,
@@ -136,3 +136,19 @@ CREATE TABLE Paiements(
   foreign key(numCheque) references Cheque ON DELETE CASCADE,
   foreign key(numCarte) references CarteCredit ON DELETE CASCADE
 );
+ALTER TABLE Produit
+ADD CONSTRAINT stock_Positif CHECK (stock >= 0);
+
+ALTER TABLE Produit
+ADD CONSTRAINT seuilMinimum_Positif CHECK (seuilMinStock >= 0);
+
+ALTER TABLE CarteCredit
+ADD CONSTRAINT typeCarte_Valide CHECK 
+(typeCarte IN ('VISA', 'Master Card', 'American Express'));
+
+ALTER TABLE CommandeProduit
+ADD CONSTRAINT nbrItems_Valide CHECK (nbrItems >=0);
+
+ALTER TABLE Fournisseur
+ADD CONSTRAINT typeFourn_Valide CHECK
+(typeFourn IN ('Transformateur', 'Importateur', 'Livreur'));
