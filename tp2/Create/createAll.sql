@@ -1,3 +1,5 @@
+
+--Création des tables de la BD
 CREATE TABLE Produit(
   numReference number(5) not null,
   typeProduit number(5) not null,
@@ -136,6 +138,8 @@ CREATE TABLE Paiement(
   foreign key(numCheque) references Cheque ON DELETE CASCADE,
   foreign key(numCarte) references CarteCredit ON DELETE CASCADE
 );
+
+--Les contraintes des table
 ALTER TABLE Produit
 ADD CONSTRAINT stock_Positif CHECK (stock >= 0);
 
@@ -152,6 +156,9 @@ ADD CONSTRAINT nbrItems_Valide CHECK (nbrItems >=0);
 ALTER TABLE Fournisseur
 ADD CONSTRAINT typeFourn_Valide CHECK
 (typeFourn IN ('Transformateur', 'Importateur', 'Livreur'));
+
+
+--Création des séquences de la BD
 CREATE SEQUENCE numModification 
 Start WITH 1 
 INCREMENT by 1;
@@ -182,7 +189,10 @@ INCREMENT by 1;
 
 CREATE SEQUENCE codeClient
 Start WITH 1 
-INCREMENT by 1;create or replace TRIGGER actualiserStock
+INCREMENT by 1;
+
+--Création des triggers
+CREATE OR REPLACE TRIGGER actualiserStock
 BEFORE INSERT ON CommandeProduit 
 FOR EACH ROW
 DECLARE
@@ -197,7 +207,5 @@ IF :new.nbritems > qqt then
 else 
   UPDATE Produit SET stock = (stock - :new.nbritems) WHERE numReference = :new.numreference;
 end if;
-END;gneApres.numReference;
-  END IF;
 END;
-
+/

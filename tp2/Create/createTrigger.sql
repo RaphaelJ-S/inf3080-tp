@@ -1,4 +1,4 @@
-create or replace TRIGGER actualiserStock
+CREATE OR REPLACE TRIGGER actualiserStock
 BEFORE INSERT ON CommandeProduit 
 FOR EACH ROW
 DECLARE
@@ -13,7 +13,5 @@ IF :new.nbritems > qqt then
 else 
   UPDATE Produit SET stock = (stock - :new.nbritems) WHERE numReference = :new.numreference;
 end if;
-END;gneApres.numReference;
-  END IF;
 END;
-
+/
