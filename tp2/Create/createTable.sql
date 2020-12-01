@@ -1,61 +1,88 @@
+SET ECHO ON;
+
 CREATE TABLE Produit(
-  numReference number(5) not null,
-  typeProduit number(5) not null,
-  description varchar2(20) not null,
-  preFix varchar2(10) not null,
-  prixVente number(10,2) not null,
-  dateEntree date not null,
-  seuilMinStock number(4) not null,
-  stock number(4) not null,
-  primary key (numReference)
+  numReference number(5) NOT NULL,
+  typeProduit number(5) NOT NULL,
+  description varchar2(20) NOT NULL,
+  preFix varchar2(10) NOT NULL,
+  prixVente number(10,2) NOT NULL,
+  dateEntree date NOT NULL,
+  seuilMinStock number(4) NOT NULL,
+  stock number(4) NOT NULL,
+  PRIMARY KEY(numReference)
 );
 
-CREATE TABLE Adresse (
-  codePostal varchar2(7) not null,
-  pays varchar2(5) not null,
-  numCiv number(5) not null,
-  ville varchar2(15) not null, 
-  rue varchar2(20) not null,
-  primary key(codePostal)
+CREATE TABLE Livraison(
+  numLivraison number(20),
+  dateJour date NOT NULL,
+  dateLivraison date NOT NULL,
+  PRIMARY KEY(numLivraison) 
 );
+CREATE TABLE Adresse (
+  codePostal varchar2(7) NOT NULL,
+  pays varchar2(5) NOT NULL,
+  numCiv number(5) NOT NULL,
+  ville varchar2(15) NOT NULL, 
+  rue varchar2(20) NOT NULL,
+  PRIMARY KEY(codePostal)
+);
+
+CREATE TABLE Individu(
+  codeIndividu number(20) NOT NULL,
+  numTel varchar2(14) NOT NULL,
+  motDePasse varchar2(14) NOT NULL,
+  codePostal varchar2(7) NOT NULL,
+  PRIMARY KEY(codeIndividu),
+  FOREIGN KEY(codePostal) REFERENCES Adresse ON DELETE CASCADE
+);
+
 
 CREATE TABLE Commande(
-  numCommande number(20) not null,
-  dateCommande date not null, 
-  etatCommande varchar2(10)not null,
-  primary key(numCommande)
+  numCommande number(20) NOT NULL,
+  dateCommande date NOT NULL, 
+  etatCommande varchar2(10) NOT NULL,
+  codeIndividu number(20) NOT NULL,
+  PRIMARY KEY(numCommande),
+  FOREIGN KEY(codeIndividu) REFERENCES Individu ON DELETE CASCADE
 );
 
+CREATE TABLE Paiement(
+  numPaiement number(20) NOT NULL,
+  numLivraison number(20) NOT NULL,
+  montant number(10,2) NOT NULL,
+  datePaiement date NOT NULL,
+  methodePaiement varchar2(10) NOT NULL,
+  PRIMARY KEY(numPaiement, numLivraison),
+  FOREIGN KEY(numLivraison) REFERENCES Livraison ON DELETE CASCADE
+);
 CREATE TABLE CarteCredit(
-  numCarte number(16) not null,
-  typeCarte varchar2(15) not null,
-  primary key(numCarte)
+  numPaiement number(20),
+  numLivraison number(20),
+  dateExpiration date NOT NULL,
+  numCarte number(16) NOT NULL,
+  typeCarte varchar2(15) NOT NULL,
+  PRIMARY KEY(numPaiement, numLivraison),
+  FOREIGN KEY(numPaiement, numLivraison) REFERENCES Paiement ON DELETE CASCADE
 );
 
 CREATE TABLE Cheque(
-  numCheque number(20) not null,
-  idBanque number(10) not null,
-  primary key(numCheque)
+  numPaiement number(20),
+  numLivraison number(20),
+  numCheque number(20) NOT NULL,
+  idBanque number(10) NOT NULL,
+  PRIMARY KEY(numPaiement, numLivraison),
+  FOREIGN KEY(numPaiement, numLivraison) REFERENCES Paiement ON DELETE CASCADE
 );
 
 CREATE TABLE CommandeProduit(
-  numReference number(20) not null,
-  numCommande number(20) not null,
-  nbrItems number(4) not null,
-  primary key(numReference, numCommande),
-  foreign key(numReference) references Produit ON DELETE CASCADE,
-  foreign key(numCommande) references Commande ON DELETE CASCADE
+  numReference number(20) NOT NULL,
+  numCommande number(20) NOT NULL,
+  nbrItems number(4) NOT NULL,
+  PRIMARY KEY(numReference, numCommande),
+  FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE,
+  FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE
 );  
-
-CREATE TABLE Individu(
-  codeInd number(20) not null,
-  numTel varchar2(14) not null,
-  motDePasse varchar2(14) not null,
-  codePostal varchar2(7) not null,
-  primary key(codeInd),
-  foreign key(codePostal) references Adresse ON DELETE CASCADE
-);
-
+/*
 CREATE TABLE ModificationPrix (
   numMod number(20) not null,
   dateMod date not null,
@@ -64,78 +91,64 @@ CREATE TABLE ModificationPrix (
   foreign key(numReference) references Produit ON DELETE CASCADE,
   primary key(numMod)
 );
-
+*/
 CREATE TABLE Fournisseur(
-  codeFourn number(20) not null,
-  typeFourn varchar2(50) not null,
-  attribut varchar2(50) not null,
-  primary key(codeFourn),
-  foreign key(codeFourn) references Individu ON DELETE CASCADE
+  codeIndividu number(20) NOT NULL,
+  typeFourn varchar2(50) NOT NULL,
+  attribut varchar2(50) NOT NULL,
+  PRIMARY KEY(codeIndividu),
+  FOREIGN KEY(codeIndividu) REFERENCES Individu ON DELETE CASCADE
 );
 
 CREATE TABLE Client(
-  codeClient number(20) not null,
-  nom varchar2(50) not null,
-  prenom varchar2(50) not null,
-  qualite varchar2(50) not null,
-  etatCompte varChar(10) not null,
-  primary key(codeClient),
-  foreign key(codeClient) references Individu ON DELETE CASCADE
+  codeIndividu number(20) NOT NULL,
+  nom varchar2(50) NOT NULL,
+  prenom varchar2(50) NOT NULL,
+  qualite varchar2(50) NOT NULL,
+  etatCompte varChar(10) NOT NULL,
+  PRIMARY KEY(codeIndividu),
+  FOREIGN KEY(codeIndividu) REFERENCES Individu ON DELETE CASCADE
 );
 
+CREATE TABLE CommandeLivraison(
+  numCommande number(20),
+  numLivraison number(20),
+  nbrItems number(4) NOT NULL,
+  PRIMARY KEY(numCommande, numLivraison),
+  FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE,
+  FOREIGN KEY(numLivraison) REFERENCES Livraison ON DELETE CASCADE
+);
 CREATE TABLE ProduitFournisseur(
-  codeFourn number(20) not null,
-  numReference number(20) not null,
-  ordrePrio number(1) not null,
-  primary key(codeFourn, numReference),
-  foreign key(codeFourn) references Fournisseur ON DELETE CASCADE,
-  foreign key(numReference) references Produit ON DELETE CASCADE
+  codeIndividu number(20) NOT NULL,
+  numReference number(20) NOT NULL,
+  ordrePrio number(1) NOT NULL,
+  PRIMARY KEY(codeIndividu, numReference),
+  FOREIGN KEY(codeIndividu) REFERENCES Fournisseur ON DELETE CASCADE,
+  FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE
 );
 
 CREATE TABLE Facture(
-  numFacture number(20) not null,
-  prixSousTotal number(10,2) not null,
-  taxes number(10,2) not null,
-  prixTotal number(10,2) not null,
-  etatFacture varchar2(10) not null,
-  dateLivraison date not null,
-  codeClient number(20),
-  primary key(numFacture),
-  foreign key(codeClient) references Client ON DELETE CASCADE
+  numLivraison number(20) NOT NULL,
+  prixSousTotal number(10,2) NOT NULL,
+  taxes number(10,2) NOT NULL,
+  prixTotal number(10,2) NOT NULL,
+  etatFacture varchar2(10) NOT NULL,
+  codeIndividu number(20) NOT NULL,
+  PRIMARY KEY(numLivraison),
+  FOREIGN KEY(codeIndividu) REFERENCES Client ON DELETE CASCADE,
+  FOREIGN KEY(numLivraison) REFERENCES Livraison ON DELETE CASCADE
 );
 
 CREATE TABLE Exemplaire (
-  codeZebre number(12) not null,
-  numReference number(20) not null,
-  numFacture number(20) not null,
-  primary key(codeZebre),
-  foreign key(numReference) references Produit ON DELETE CASCADE,
-  foreign key(numFacture) references Facture ON DELETE CASCADE
+  codeZebre number(12) NOT NULL,
+  numReference number(20) NOT NULL,
+  numLivraison number(20) NOT NULL,
+  PRIMARY KEY(codeZebre),
+  FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE,
+  FOREIGN KEY(numLivraison) REFERENCES Livraison ON DELETE CASCADE
 );
 
-CREATE TABLE CommandeFacture(
-  numCommande number(20) not null,
-  numFacture number(20) not null,
-  nbrItems number(4) not null,
-  numReference number(20) not null,
-  primary key(numCommande, numFacture),
-  foreign key(numCommande) references Commande ON DELETE CASCADE,
-  foreign key(numFacture) references Facture ON DELETE CASCADE
-);
 
-CREATE TABLE Paiement(
-  numPaiement number(20) not null,
-  montant number(10,2) not null,
-  datePaiement date not null,
-  methodePaiement varchar2(10) not null,
-  numFacture number(20) not null,
-  numCheque number(20),
-  numCarte number(16),
-  primary key(numPaiement),
-  foreign key(numFacture) references Facture ON DELETE CASCADE,
-  foreign key(numCheque) references Cheque ON DELETE CASCADE,
-  foreign key(numCarte) references CarteCredit ON DELETE CASCADE
-);
 ALTER TABLE Produit
 ADD CONSTRAINT stock_Positif CHECK (stock >= 0);
 
