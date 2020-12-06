@@ -43,7 +43,11 @@ DECLARE
     CURSOR cur_adresse_client IS
         SELECT *
         FROM Adresse
-                 INNER JOIN CLIENT On ADRESSE.codeIndividu = Client.CODEINDIVIDU;
+        where (SELECT CODEINDIVIDU
+            from
+            LIVRAISON
+            where NUMLIVRAISON=numLivr
+            );
     adresse_complete ADRESSE%ROWTYPE;
 
 BEGIN
@@ -52,7 +56,7 @@ BEGIN
         FETCH cur_adresse_client INTO adresse_complete;
         EXIT WHEN cur_adresse_client%NOTFOUND;
     END LOOP;
-        CLOSE cur_adresse_client;
+    CLOSE cur_adresse_client;
 
 /*
 DECLARE
@@ -71,30 +75,37 @@ CLOSE liste_produit_facture;
 END;
 */
 
-        select CODEINDIVIDU into num_client_c from Facture Where numLivraison = numLivr;
-        select nom
-        into nom_client_c
-        from Client
-                 INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU;
-        select prenom
-        into prenom_client_c
-        from Client
-                 INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU;
-        select numLivraison into num_livraison_c from Facture Where numLivraison = numLivr;
-        select DATELIVRAISON into date_livraison_c from Livraison Where numLivraison = numLivr;
-        select prixSousTotal into prix_soustotal_c from Facture Where numLivraison = numLivr;
-        select taxes into taxes_c from Facture Where numLivraison = numLivr;
-        select prixTotal into prix_total_c from Facture Where numLivraison = numLivr;
+    select CODEINDIVIDU into num_client_c from Facture Where numLivraison = numLivr;
 
-        dbms_output.put_line('**********Facture Client**********');
-        dbms_output.put_line('Numero du Client: ' || num_client_c);
-        dbms_output.put_line('Nom du Client: ' || nom_client_c);
-        dbms_output.put_line('Prenom du Client: ' || prenom_client_c);
-        dbms_output.put_line('Adresse du Client: ' || adresse_complete);
-        dbms_output.put_line('Numero de Livraison: ' || num_livraison_c);
-        dbms_output.put_line('Date de Livraison: ' || date_livraison_c);
-        dbms_output.put_line('Liste de Produits: ' || liste_complete);
-        dbms_output.put_line('Prix Sous-Total: ' || prix_soustotal_c);
-        dbms_output.put_line('Montant des Taxes: ' || taxes_c);
-        dbms_output.put_line('Prix Total: ' || prix_total_c);
-    end;
+    select nom
+    into nom_client_c
+    from Client
+             INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU;
+
+    select prenom
+    into prenom_client_c
+    from Client
+             INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU;
+
+    select numLivraison into num_livraison_c from Facture Where numLivraison = numLivr;
+
+    select DATELIVRAISON into date_livraison_c from Livraison Where numLivraison = numLivr;
+
+    select prixSousTotal into prix_soustotal_c from Facture Where numLivraison = numLivr;
+
+    select taxes into taxes_c from Facture Where numLivraison = numLivr;
+
+    select prixTotal into prix_total_c from Facture Where numLivraison = numLivr;
+
+    dbms_output.put_line('**********Facture Client**********');
+    dbms_output.put_line('Numero du Client: ' || num_client_c);
+    dbms_output.put_line('Nom du Client: ' || nom_client_c);
+    dbms_output.put_line('Prenom du Client: ' || prenom_client_c);
+    dbms_output.put_line('Adresse du Client: ' || adresse_complete);
+    dbms_output.put_line('Numero de Livraison: ' || num_livraison_c);
+    dbms_output.put_line('Date de Livraison: ' || date_livraison_c);
+    dbms_output.put_line('Liste de Produits: ' || liste_complete);
+    dbms_output.put_line('Prix Sous-Total: ' || prix_soustotal_c);
+    dbms_output.put_line('Montant des Taxes: ' || taxes_c);
+    dbms_output.put_line('Prix Total: ' || prix_total_c);
+end;
