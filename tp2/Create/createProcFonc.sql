@@ -66,11 +66,11 @@ END;
 */
 begin
 
-select codeClient into num_client_c from Facture Where numLivraison = numLivr;
-select nomClient into nom_client_c from Client INNER JOIN Facture ON Client.codeIndividu = Facture.codeClient;
-select prenomClient into prenom_client_c from Client INNER JOIN Facture ON Client.codeIndividu = Facture.codeClient;
+select CODEINDIVIDU into num_client_c from Facture Where numLivraison = numLivr;
+select nom into nom_client_c from Client INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU;
+select prenom into prenom_client_c from Client INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU;
 select numLivraison into num_livraison_c from Facture Where numLivraison = numLivr;
-select dateLivraison into date_livraison_c from Facture Where numLivraison = numLivr;
+select DATELIVRAISON into date_livraison_c from Livraison Where numLivraison = numLivr;
 select prixSousTotal into prix_soustotal_c from Facture Where numLivraison = numLivr;
 select taxes into taxes_c from Facture Where numLivraison = numLivr;
 select prixTotal into prix_total_c from Facture Where numLivraison = numLivr;
