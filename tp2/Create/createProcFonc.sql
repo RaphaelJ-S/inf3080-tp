@@ -1,16 +1,17 @@
 create or replace procedure QuantiteDejaLivree(numRef in number, numCom in number)
     is
     nbr_items_c number(4);
+    correspond  number(20);
 
 begin
 
     select numLivraison into correspond from CommandeLivraison Where numCommande = numCom;
-    select count(codeZebre) from Exemplaire WHERE numLivraison = correspond AND numReference = numRef;
-    select nbrItems
+    select count(codeZebre) into nbr_items_c from Exemplaire WHERE numLivraison = correspond AND numReference = numRef;
+    /*select nbrItems
     into nbr_items_c
     from CommandeLivraison
     where numRef = numReference
-      and numCom = numCommande;
+      and numCom = numCommande;*/
     dbms_output.put_line('Quantite deja livree: ' || nbr_items_c);
 end;
 
