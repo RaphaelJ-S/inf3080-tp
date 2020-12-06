@@ -1,6 +1,7 @@
 create or replace procedure QuantiteDejaLivree(numRef in number, numCom in number)
     is
     nbr_items_c number(4);
+
 begin
 
     select numLivraison into correspond from CommandeLivraison Where numCommande = numCom;
@@ -39,15 +40,30 @@ create or replace procedure ProduireFacture(numLivr in number, dateLimite in dat
     prix_total_c     number(10, 2);
 
 
+/*DECLARE
+CURSOR cur_produit_facture IS
+SELECT *
+FROM PRODUIT
+WHERE  = numLivr
+liste_complete %TYPE;
+BEGIN
+  OPEN liste_produit_facture;
+LOOP
+  FETCH liste_produit_facture INTO liste_complete;
+  EXIT WHEN liste_produit_facture%NOTFOUND;
+END LOOP
+CLOSE liste_produit_facture;
+*/
+
+
 DECLARE
     CURSOR cur_adresse_client IS
         SELECT *
         FROM Adresse
-        where (SELECT CODEINDIVIDU
-            from
-            LIVRAISON
-            where NUMLIVRAISON=numLivr
-            );
+        where ADRESSE.CODEINDIVIDU = (select CODEINDIVIDU
+                                      from Facture
+                                      Where numLivraison = numLivr
+        );
     adresse_complete ADRESSE%ROWTYPE;
 
 BEGIN
@@ -57,23 +73,6 @@ BEGIN
         EXIT WHEN cur_adresse_client%NOTFOUND;
     END LOOP;
     CLOSE cur_adresse_client;
-
-/*
-DECLARE
-CURSOR liste_produit_facture IS
-SELECT X
-FROM X
-WHERE X = X; 
-liste_complete X.X%TYPE;
-BEGIN
-  OPEN liste_produit_facture;
-LOOP
-  FETCH liste_produit_facture INTO liste_complete;
-  EXIT WHEN liste_produit_facture%NOTFOUND;
-END LOOP
-CLOSE liste_produit_facture;
-END;
-*/
 
     select CODEINDIVIDU into num_client_c from Facture Where numLivraison = numLivr;
 
@@ -104,7 +103,7 @@ END;
     dbms_output.put_line('Adresse du Client: ' || adresse_complete);
     dbms_output.put_line('Numero de Livraison: ' || num_livraison_c);
     dbms_output.put_line('Date de Livraison: ' || date_livraison_c);
-    dbms_output.put_line('Liste de Produits: ' || liste_complete);
+/*dbms_output.put_line('Liste de Produits: ' || liste_complete);*/
     dbms_output.put_line('Prix Sous-Total: ' || prix_soustotal_c);
     dbms_output.put_line('Montant des Taxes: ' || taxes_c);
     dbms_output.put_line('Prix Total: ' || prix_total_c);
