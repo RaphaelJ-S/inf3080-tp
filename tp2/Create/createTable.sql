@@ -1,7 +1,7 @@
 SET ECHO ON;
 
 CREATE TABLE Produit(
-  numReference number(5) NOT NULL,
+  numReference number(20) NOT NULL,
   typeProduit number(5) NOT NULL,
   description varchar2(20) NOT NULL,
   preFix varchar2(10) NOT NULL,
@@ -11,12 +11,15 @@ CREATE TABLE Produit(
   stock number(4) NOT NULL,
   PRIMARY KEY(numReference)
 );
-
-CREATE TABLE Livraison(
+--Livraison tmp, vérifier les autres références à cette table
+CREATE TABLE Livraisons(
   numLivraison number(20),
+  numReference number(20) NOT NULL,
   dateJour date NOT NULL,
   dateLivraison date NOT NULL,
-  PRIMARY KEY(numLivraison) 
+  nbrItems number(10) NOT NULL,
+  PRIMARY KEY(numLivraison),
+  FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE 
 );
 CREATE TABLE Adresse (
   codePostal varchar2(7) NOT NULL,
@@ -53,7 +56,7 @@ CREATE TABLE Paiement(
   datePaiement date NOT NULL,
   methodePaiement varchar2(10) NOT NULL,
   PRIMARY KEY(numPaiement, numLivraison),
-  FOREIGN KEY(numLivraison) REFERENCES Livraison ON DELETE CASCADE
+  FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
 CREATE TABLE CarteCredit(
   numPaiement number(20),
@@ -77,7 +80,7 @@ CREATE TABLE Cheque(
 CREATE TABLE CommandeProduit(
   numReference number(20) NOT NULL,
   numCommande number(20) NOT NULL,
-  nbrItems number(4) NOT NULL,
+  nbrItems number(10) NOT NULL, 
   PRIMARY KEY(numReference, numCommande),
   FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE,
   FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE
@@ -113,10 +116,9 @@ CREATE TABLE Client(
 CREATE TABLE CommandeLivraison(
   numCommande number(20),
   numLivraison number(20),
-  nbrItems number(4) NOT NULL,
   PRIMARY KEY(numCommande, numLivraison),
   FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE,
-  FOREIGN KEY(numLivraison) REFERENCES Livraison ON DELETE CASCADE
+  FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
 CREATE TABLE ProduitFournisseur(
   codeIndividu number(20) NOT NULL,
@@ -136,7 +138,7 @@ CREATE TABLE Facture(
   codeIndividu number(20) NOT NULL,
   PRIMARY KEY(numLivraison),
   FOREIGN KEY(codeIndividu) REFERENCES Client ON DELETE CASCADE,
-  FOREIGN KEY(numLivraison) REFERENCES Livraison ON DELETE CASCADE
+  FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
 
 CREATE TABLE Exemplaire (
@@ -145,7 +147,7 @@ CREATE TABLE Exemplaire (
   numLivraison number(20) NOT NULL,
   PRIMARY KEY(codeZebre),
   FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE,
-  FOREIGN KEY(numLivraison) REFERENCES Livraison ON DELETE CASCADE
+  FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
 
 

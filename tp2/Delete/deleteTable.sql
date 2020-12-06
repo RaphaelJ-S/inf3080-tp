@@ -8,7 +8,7 @@ DROP TABLE Cheque;
 DROP TABLE Paiement;
 DROP TABLE Exemplaire;
 DROP TABLE Facture;
-DROP TABLE Livraison;
+DROP TABLE Livraisons;
 DROP TABLE Client;
 DROP TABLE Fournisseur;
 DROP TABLE Commande;
