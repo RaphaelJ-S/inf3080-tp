@@ -66,9 +66,16 @@ END;
 */
 begin
 
-/*
-select X into X from X where X ;
+
+select codeClient into num_client_c from Facture Where numLivraison = numLivr;
+/* select nomClient into nom_client_c from  Where ;
+select prenomClient into prenom_client_c from  Where ;
 */
+select numLivraison into num_livraison_c from Facture Where numLivraison = numLivr;
+select dateLivraison into date_livraison_c from Facture Where numLivraison = numLivr;
+select prixSousTotal into prix_soustotal_c from Facture Where numLivraison = numLivr;
+select taxes into taxes_c from Facture Where numLivraison = numLivr;
+select prixTotal into prix_total_c from Facture Where numLivraison = numLivr;
 
 dbms_output.put_line('**********Facture Client**********');
 dbms_output.put_line('Numero du Client: '|| num_client_c);
