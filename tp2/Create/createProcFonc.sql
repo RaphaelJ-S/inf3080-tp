@@ -19,7 +19,7 @@ begin
 
 select prixTotal into montant_total_c
 from Facture where numFac=numLivraison;
-dbms_output.put_line('Montant total de la facture: '|| prix_total_c);
+dbms_output.put_line('Montant total de la facture: '|| montant_total_c);
 end;
 
 
