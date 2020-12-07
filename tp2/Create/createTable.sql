@@ -18,7 +18,9 @@ CREATE TABLE Adresse (
   numCiv number(5) NOT NULL,
   ville varchar2(15) NOT NULL, 
   rue varchar2(20) NOT NULL,
-  PRIMARY KEY(codePostal)
+  PRIMARY KEY(codePostal),
+  FOREIGN KEY (codeIndividu) REFERENCES individu ON DELETE CASCADE
+
 );
 
 CREATE TABLE Individu(
