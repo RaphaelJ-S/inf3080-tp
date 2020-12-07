@@ -18,8 +18,7 @@ CREATE TABLE Adresse (
   numCiv number(5) NOT NULL,
   ville varchar2(15) NOT NULL, 
   rue varchar2(20) NOT NULL,
-  PRIMARY KEY(codePostal),
-  FOREIGN KEY (codeIndividu) REFERENCES Individu ON DELETE CASCADE
+  PRIMARY KEY(codePostal)
 );
 
 CREATE TABLE Individu(
@@ -162,3 +161,7 @@ ADD CONSTRAINT nbrItems_Valide CHECK (nbrItems >=0);
 ALTER TABLE Fournisseur
 ADD CONSTRAINT typeFourn_Valide CHECK
 (typeFourn IN ('Transformateur', 'Importateur', 'Livreur'));
+
+ALTER TABLE Adresse
+ADD FOREIGN KEY (codeIndividu) REFERENCES Individu ON DELETE CASCADE	       
+	       
