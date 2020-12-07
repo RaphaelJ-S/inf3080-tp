@@ -19,8 +19,7 @@ CREATE TABLE Adresse (
   ville varchar2(15) NOT NULL, 
   rue varchar2(20) NOT NULL,
   PRIMARY KEY(codePostal),
-  FOREIGN KEY (codeIndividu) REFERENCES individu ON DELETE CASCADE
-
+  FOREIGN KEY (codeIndividu) REFERENCES Individu ON DELETE CASCADE
 );
 
 CREATE TABLE Individu(
@@ -52,6 +51,7 @@ CREATE TABLE Livraisons(
 	FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE,
 	FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE 
 );
+
 CREATE TABLE Paiement(
   numPaiement number(20) NOT NULL,
   numLivraison number(20) NOT NULL,
@@ -61,6 +61,7 @@ CREATE TABLE Paiement(
   PRIMARY KEY(numPaiement, numLivraison),
   FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
+
 CREATE TABLE CarteCredit(
   numPaiement number(20),
   numLivraison number(20),
@@ -144,7 +145,6 @@ CREATE TABLE Exemplaire (
   FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE,
   FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
-
 
 ALTER TABLE Produit
 ADD CONSTRAINT stock_Positif CHECK (stock >= 0);
