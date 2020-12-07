@@ -50,6 +50,7 @@ CREATE TABLE Livraisons(
 	FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE,
 	FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE 
 );
+
 CREATE TABLE Paiement(
   numPaiement number(20) NOT NULL,
   numLivraison number(20) NOT NULL,
@@ -59,6 +60,7 @@ CREATE TABLE Paiement(
   PRIMARY KEY(numPaiement, numLivraison),
   FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
+
 CREATE TABLE CarteCredit(
   numPaiement number(20),
   numLivraison number(20),
@@ -143,7 +145,6 @@ CREATE TABLE Exemplaire (
   FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
 
-
 ALTER TABLE Produit
 ADD CONSTRAINT stock_Positif CHECK (stock >= 0);
 
@@ -160,3 +161,7 @@ ADD CONSTRAINT nbrItems_Valide CHECK (nbrItems >=0);
 ALTER TABLE Fournisseur
 ADD CONSTRAINT typeFourn_Valide CHECK
 (typeFourn IN ('Transformateur', 'Importateur', 'Livreur'));
+
+ALTER TABLE Adresse
+ADD FOREIGN KEY (codeIndividu) REFERENCES Individu ON DELETE CASCADE	       
+	       
