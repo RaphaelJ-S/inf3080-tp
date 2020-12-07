@@ -221,4 +221,114 @@ INSERT
 INTO Livraisons
 VALUES(numlivraisons.nextval, 6,2, TO_DATE('2020-12-03'), TO_DATE('2020-12-04'), 20);
 
---Insertions des données de la table 
+--Insertions des données de la table Exemplaire
+
+INSERT
+INTO Exemplaire
+VALUES(12345, 2, 2);
+
+INSERT
+INTO Exemplaire
+VALUES(43261, 5, 2);
+
+INSERT
+INTO Exemplaire
+VALUES(125131, 6, 5);
+
+INSERT
+INTO Exemplaire
+VALUES(132124, 3, 4);
+
+INSERT
+INTO Exemplaire
+VALUES(5445, 4, 3);
+
+--Insertions des données de la table Facture
+
+
+INSERT
+INTO Facture
+VALUES(2, 200, 1.15, 215, 'non payee', 2);
+
+INSERT
+INTO Facture
+VALUES(3, 100, 1.15, 115, 'paye partiel', 3);
+
+INSERT
+INTO Facture
+VALUES(4, 150, 1.15, 172.5, 'non payee', 4);
+
+INSERT
+INTO Facture
+VALUES(5, 435, 1.15, 500.25, 'payee', 5);
+
+INSERT
+INTO Facture
+VALUES(6, 1000, 1.15, 1150, 'paye partiel', 6);
+
+--Insertions des données de la table Paiement
+
+INSERT
+INTO Paiement
+Values(numpaiement.nextval, 2, 150, TO_DATE('2020-05-12'), 'CarteCredit'); 
+
+INSERT
+INTO Paiement
+Values(numpaiement.nextval, 3, 115, TO_DATE('2019-12-25'), 'Cheque'); 
+
+INSERT
+INTO Paiement
+Values(numpaiement.nextval, 4, 25, TO_DATE('2018-01-30'), 'Cheque'); 
+
+INSERT
+INTO Paiement
+Values(numpaiement.nextval, 5, 325, TO_DATE('2020-09-11'), 'CarteCredit'); 
+
+INSERT
+INTO Paiement
+Values(numpaiement.nextval, 6, 500, TO_DATE('2010-02-22'), 'CarteCredit');
+
+--Insertions des données de la table Cheque
+
+INSERT
+INTO Cheque
+VALUES( 2, 2, 1234123, 99999);
+
+INSERT
+INTO Cheque
+VALUES( 3, 3, 435234, 88888);
+
+INSERT
+INTO Cheque
+VALUES( 4, 4, 5839, 77777);
+
+INSERT
+INTO Cheque
+VALUES( 5, 5, 45327, 6666);
+
+INSERT
+INTO Cheque
+VALUES( 6, 6, 13453, 44444);
+
+--Insertions des données de la table CarteCredit
+
+INSERT
+INTO CarteCredit
+VALUES( 2, 2, TO_DATE('2021-04-05'), 132124, 'VISA');
+
+INSERT
+INTO CarteCredit
+VALUES( 3, 3, TO_DATE('2020-12-30'), 213415, 'Master Card');
+
+INSERT
+INTO CarteCredit
+VALUES( 4, 4, TO_DATE('2021-01-12'), 456456, 'American Express');
+
+INSERT
+INTO CarteCredit
+VALUES( 5, 5, TO_DATE('2022-11-23'), 53435, 'VISA');
+
+INSERT
+INTO CarteCredit
+VALUES( 6, 6, TO_DATE('2022-12-03'), 34234, 'Master Card');
+

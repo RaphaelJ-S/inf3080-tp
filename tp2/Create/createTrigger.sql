@@ -15,7 +15,7 @@ BEGIN
  	WHERE numReference = :NEW.numreference;
 
 	IF :NEW.nbritems > qqt THEN 
-		raise_application_error(-20101, 'Nombre commandé supérieur au stock existant.');
+		raise_application_error(-20101, 'Nombre commande superieur au stock existant.');
 	END IF;
 END;
 /
@@ -45,7 +45,7 @@ BEGIN
 	WHERE numReference = :NEW.numreference AND numCommande = :NEW.numCommande;
 
 	IF :NEW.nbritems > qqt THEN 
-		raise_application_error(-20102, 'Nombre commandé est supérieur au stock de la commande.');
+		raise_application_error(-20102, 'Nombre commande est superieur au stock de la commande.');
 	END IF;
 END;
 /

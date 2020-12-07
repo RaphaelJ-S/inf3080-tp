@@ -78,7 +78,7 @@ CREATE TABLE Paiement(
   numLivraison number(20) NOT NULL,
   montant number(10,2) NOT NULL,
   datePaiement date NOT NULL,
-  methodePaiement varchar2(10) NOT NULL,
+  methodePaiement varchar2(16) NOT NULL,
   PRIMARY KEY(numPaiement, numLivraison),
   FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
@@ -87,7 +87,7 @@ CREATE TABLE CarteCredit(
   numLivraison number(20),
   dateExpiration date NOT NULL,
   numCarte number(16) NOT NULL,
-  typeCarte varchar2(15) NOT NULL,
+  typeCarte varchar2(16) NOT NULL,
   PRIMARY KEY(numPaiement, numLivraison),
   FOREIGN KEY(numPaiement, numLivraison) REFERENCES Paiement ON DELETE CASCADE
 );
@@ -142,7 +142,7 @@ CREATE TABLE Facture(
   prixSousTotal number(10,2) NOT NULL,
   taxes number(10,2) NOT NULL,
   prixTotal number(10,2) NOT NULL,
-  etatFacture varchar2(10) NOT NULL,
+  etatFacture varchar2(14) NOT NULL,
   codeIndividu number(20) NOT NULL,
   PRIMARY KEY(numLivraison),
   FOREIGN KEY(codeIndividu) REFERENCES Client ON DELETE CASCADE,
