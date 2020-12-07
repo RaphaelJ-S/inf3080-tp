@@ -31,7 +31,7 @@ begin
 end;
 
 
-create procedure ProduireFacture(numLivr in number, dateLimite in date)
+create or replace procedure ProduireFacture(numLivr in number, dateLimite in date)
     is
     num_client_c     number(20);
     nom_client_c     varchar(50);
@@ -57,13 +57,13 @@ Begin
 
     select nom
     into nom_client_c
-    from Client
-             INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU;
+    from Individu
+             INNER JOIN Facture ON Individu.codeIndividu = Facture.CODEINDIVIDU;
 
     select prenom
     into prenom_client_c
-    from Client
-             INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU;
+    from Individu
+             INNER JOIN Facture ON Individu.codeIndividu = Facture.CODEINDIVIDU;
 
     select numLivraison into num_livraison_c from Facture Where numLivraison = numLivr;
 
@@ -89,7 +89,7 @@ Begin
     dbms_output.put_line('Date de Livraison: ' || date_livraison_c);
 
 
-DECLARE
+    DECLARE
             CURSOR cur_liste_commande IS
                 SELECT LIVRAISON.NUMCOMMANDE, CODEZEBRE, PRIXVENTE, TYPEPRODUIT
                 into c_num_commande
@@ -110,8 +110,8 @@ DECLARE
             END LOOP;
             CLOSE cur_liste_commande;
         end;
-    /*
-     DECLARE
+/*
+        DECLARE
             CURSOR cur_liste_produit IS
                 SELECT *
                 FROM COMMANDEPRODUIT
@@ -151,5 +151,6 @@ DECLARE
         dbms_output.put_line('Montant des Taxes: ' || taxes_c);
         dbms_output.put_line('Prix Total: ' || prix_total_c);
     end;
-/
+
+
 
