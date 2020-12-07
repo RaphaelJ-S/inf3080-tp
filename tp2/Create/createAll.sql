@@ -1,145 +1,164 @@
+CREATE SEQUENCE numReference 
+Start WITH 1 
+INCREMENT by 1;
 
---Création des tables de la BD
+CREATE SEQUENCE numCommande
+Start WITH 1 
+INCREMENT by 1;
+
+CREATE SEQUENCE codeZebre
+Start WITH 1 
+INCREMENT by 1;
+
+CREATE SEQUENCE codeIndividu
+Start WITH 1 
+INCREMENT by 1;
+
+CREATE SEQUENCE numLivraisons 
+Start WITH 1 
+INCREMENT by 1;
+
+CREATE SEQUENCE numPaiement
+START WITH 1
+INCREMENT BY 1;
+SET ECHO ON;
+
 CREATE TABLE Produit(
-  numReference number(5) not null,
-  typeProduit number(5) not null,
-  description varchar2(20) not null,
-  preFix varchar2(10) not null,
-  prixVente number(10,2) not null,
-  dateEntree date not null,
-  seuilMinStock number(4) not null,
-  stock number(4) not null,
-  primary key (numReference)
+  numReference number(20) NOT NULL,
+  typeProduit number(5) NOT NULL,
+  description varchar2(20) NOT NULL,
+  preFix varchar2(10) NOT NULL,
+  prixVente number(10,2) NOT NULL,
+  dateEntree date NOT NULL,
+  seuilMinStock number(4) NOT NULL,
+  stock number(4) NOT NULL,
+  PRIMARY KEY(numReference)
 );
 
 CREATE TABLE Adresse (
-  codePostal varchar2(7) not null,
-  pays varchar2(5) not null,
-  numCiv number(5) not null,
-  ville varchar2(15) not null, 
-  rue varchar2(20) not null,
-  primary key(codePostal)
+  codePostal varchar2(7) NOT NULL,
+  pays varchar2(5) NOT NULL,
+  numCiv number(5) NOT NULL,
+  ville varchar2(15) NOT NULL, 
+  rue varchar2(20) NOT NULL,
+  PRIMARY KEY(codePostal)
+);
+
+CREATE TABLE Individu(
+  codeIndividu number(20) NOT NULL,
+  numTel varchar2(14) NOT NULL,
+  motDePasse varchar2(14) NOT NULL,
+  codePostal varchar2(7) NOT NULL,
+  PRIMARY KEY(codeIndividu),
+  FOREIGN KEY(codePostal) REFERENCES Adresse ON DELETE CASCADE
 );
 
 CREATE TABLE Commande(
-  numCommande number(20) not null,
-  dateCommande date not null, 
-  etatCommande varchar2(10)not null,
-  primary key(numCommande)
+  numCommande number(20) NOT NULL,
+  dateCommande date NOT NULL, 
+  etatCommande varchar2(10) NOT NULL,
+  codeIndividu number(20) NOT NULL,
+  PRIMARY KEY(numCommande),
+  FOREIGN KEY(codeIndividu) REFERENCES Individu ON DELETE CASCADE
 );
 
+CREATE TABLE Livraisons(
+  numLivraison number(20),
+  numReference number(20) NOT NULL,
+  numCommande number(20) NOT NULL,
+	dateJour date NOT NULL,
+  dateLivraison date NOT NULL,
+  nbrItems number(10) NOT NULL,
+  PRIMARY KEY(numLivraison),
+	FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE,
+	FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE 
+);
+CREATE TABLE Paiement(
+  numPaiement number(20) NOT NULL,
+  numLivraison number(20) NOT NULL,
+  montant number(10,2) NOT NULL,
+  datePaiement date NOT NULL,
+  methodePaiement varchar2(10) NOT NULL,
+  PRIMARY KEY(numPaiement, numLivraison),
+  FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
+);
 CREATE TABLE CarteCredit(
-  numCarte number(16) not null,
-  typeCarte varchar2(15) not null,
-  primary key(numCarte)
+  numPaiement number(20),
+  numLivraison number(20),
+  dateExpiration date NOT NULL,
+  numCarte number(16) NOT NULL,
+  typeCarte varchar2(15) NOT NULL,
+  PRIMARY KEY(numPaiement, numLivraison),
+  FOREIGN KEY(numPaiement, numLivraison) REFERENCES Paiement ON DELETE CASCADE
 );
 
 CREATE TABLE Cheque(
-  numCheque number(20) not null,
-  idBanque number(10) not null,
-  primary key(numCheque)
+  numPaiement number(20),
+  numLivraison number(20),
+  numCheque number(20) NOT NULL,
+  idBanque number(10) NOT NULL,
+  PRIMARY KEY(numPaiement, numLivraison),
+  FOREIGN KEY(numPaiement, numLivraison) REFERENCES Paiement ON DELETE CASCADE
 );
 
 CREATE TABLE CommandeProduit(
-  numReference number(20) not null,
-  numCommande number(20) not null,
-  nbrItems number(4) not null,
-  primary key(numReference, numCommande),
-  foreign key(numReference) references Produit ON DELETE CASCADE,
-  foreign key(numCommande) references Commande ON DELETE CASCADE
+  numReference number(20) NOT NULL,
+  numCommande number(20) NOT NULL,
+  nbrItems number(10) NOT NULL, 
+  PRIMARY KEY(numReference, numCommande),
+  FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE,
+  FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE
 );  
 
-CREATE TABLE Individu(
-  codeInd number(20) not null,
-  numTel varchar2(14) not null,
-  motDePasse varchar2(14) not null,
-  codePostal varchar2(7) not null,
-  primary key(codeInd),
-  foreign key(codePostal) references Adresse ON DELETE CASCADE
-);
-
-CREATE TABLE ModificationPrix (
-  numMod number(20) not null,
-  dateMod date not null,
-  nouvPrix number(10,2) not null,
-  numReference number(20) not null,
-  foreign key(numReference) references Produit ON DELETE CASCADE,
-  primary key(numMod)
-);
-
 CREATE TABLE Fournisseur(
-  codeFourn number(20) not null,
-  typeFourn varchar2(50) not null,
-  attribut varchar2(50) not null,
-  primary key(codeFourn),
-  foreign key(codeFourn) references Individu ON DELETE CASCADE
+  codeIndividu number(20) NOT NULL,
+  typeFourn varchar2(50) NOT NULL,
+  attribut varchar2(50) NOT NULL,
+  PRIMARY KEY(codeIndividu),
+  FOREIGN KEY(codeIndividu) REFERENCES Individu ON DELETE CASCADE
 );
 
 CREATE TABLE Client(
-  codeClient number(20) not null,
-  nom varchar2(50) not null,
-  prenom varchar2(50) not null,
-  qualite varchar2(50) not null,
-  etatCompte varChar(10) not null,
-  primary key(codeClient),
-  foreign key(codeClient) references Individu ON DELETE CASCADE
+  codeIndividu number(20) NOT NULL,
+  nom varchar2(50) NOT NULL,
+  prenom varchar2(50) NOT NULL,
+  qualite varchar2(50) NOT NULL,
+  etatCompte varChar(10) NOT NULL,
+  PRIMARY KEY(codeIndividu),
+  FOREIGN KEY(codeIndividu) REFERENCES Individu ON DELETE CASCADE
 );
 
 CREATE TABLE ProduitFournisseur(
-  codeFourn number(20) not null,
-  numReference number(20) not null,
-  ordrePrio number(1) not null,
-  primary key(codeFourn, numReference),
-  foreign key(codeFourn) references Fournisseur ON DELETE CASCADE,
-  foreign key(numReference) references Produit ON DELETE CASCADE
+  codeIndividu number(20) NOT NULL,
+  numReference number(20) NOT NULL,
+  ordrePrio number(1) NOT NULL,
+  PRIMARY KEY(codeIndividu, numReference),
+  FOREIGN KEY(codeIndividu) REFERENCES Fournisseur ON DELETE CASCADE,
+  FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE
 );
 
 CREATE TABLE Facture(
-  numFacture number(20) not null,
-  prixSousTotal number(10,2) not null,
-  taxes number(10,2) not null,
-  prixTotal number(10,2) not null,
-  etatFacture varchar2(10) not null,
-  dateLivraison date not null,
-  codeClient number(20),
-  primary key(numFacture),
-  foreign key(codeClient) references Client ON DELETE CASCADE
+  numLivraison number(20) NOT NULL,
+  prixSousTotal number(10,2) NOT NULL,
+  taxes number(10,2) NOT NULL,
+  prixTotal number(10,2) NOT NULL,
+  etatFacture varchar2(10) NOT NULL,
+  codeIndividu number(20) NOT NULL,
+  PRIMARY KEY(numLivraison),
+  FOREIGN KEY(codeIndividu) REFERENCES Client ON DELETE CASCADE,
+  FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
 
 CREATE TABLE Exemplaire (
-  codeZebre number(12) not null,
-  numReference number(20) not null,
-  numFacture number(20) not null,
-  primary key(codeZebre),
-  foreign key(numReference) references Produit ON DELETE CASCADE,
-  foreign key(numFacture) references Facture ON DELETE CASCADE
+  codeZebre number(12) NOT NULL,
+  numReference number(20) NOT NULL,
+  numLivraison number(20) NOT NULL,
+  PRIMARY KEY(codeZebre),
+  FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE,
+  FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
 
-CREATE TABLE CommandeFacture(
-  numCommande number(20) not null,
-  numFacture number(20) not null,
-  nbrItems number(4) not null,
-  numReference number(20) not null,
-  primary key(numCommande, numFacture),
-  foreign key(numCommande) references Commande ON DELETE CASCADE,
-  foreign key(numFacture) references Facture ON DELETE CASCADE
-);
 
-CREATE TABLE Paiement(
-  numPaiement number(20) not null,
-  montant number(10,2) not null,
-  datePaiement date not null,
-  methodePaiement varchar2(10) not null,
-  numFacture number(20) not null,
-  numCheque number(20),
-  numCarte number(16),
-  primary key(numPaiement),
-  foreign key(numFacture) references Facture ON DELETE CASCADE,
-  foreign key(numCheque) references Cheque ON DELETE CASCADE,
-  foreign key(numCarte) references CarteCredit ON DELETE CASCADE
-);
-
---Les contraintes des table
 ALTER TABLE Produit
 ADD CONSTRAINT stock_Positif CHECK (stock >= 0);
 
@@ -156,56 +175,76 @@ ADD CONSTRAINT nbrItems_Valide CHECK (nbrItems >=0);
 ALTER TABLE Fournisseur
 ADD CONSTRAINT typeFourn_Valide CHECK
 (typeFourn IN ('Transformateur', 'Importateur', 'Livreur'));
+set echo on;
 
-
---Création des séquences de la BD
-CREATE SEQUENCE numModification 
-Start WITH 1 
-INCREMENT by 1;
-
-CREATE SEQUENCE numReference 
-Start WITH 1 
-INCREMENT by 1;
-
-CREATE SEQUENCE numCommande
-Start WITH 1 
-INCREMENT by 1;
-
-CREATE SEQUENCE numFacture
-Start WITH 1 
-INCREMENT by 1;
-
-CREATE SEQUENCE codeZebre
-Start WITH 1 
-INCREMENT by 1;
-
-CREATE SEQUENCE codeFournisseur 
-Start WITH 1 
-INCREMENT by 1;
-
-CREATE SEQUENCE codeIndividu
-Start WITH 1 
-INCREMENT by 1;
-
-CREATE SEQUENCE codeClient
-Start WITH 1 
-INCREMENT by 1;
-
---Création des triggers
-CREATE OR REPLACE TRIGGER actualiserStock
-BEFORE INSERT ON CommandeProduit 
+CREATE OR REPLACE TRIGGER Valider_Stock_Produit
+BEFORE INSERT ON Livraisons 
 FOR EACH ROW
+
 DECLARE
-  qqt INTEGER;
+	qqt INTEGER;
+
 BEGIN
-  SELECT stock
-  INTO qqt
-  FROM Produit
-  WHERE numReference = :NEW.numreference;
-IF :new.nbritems > qqt then
-    raise_application_error(-20100, 'ERREUR DANS LE NBR');
-else 
-  UPDATE Produit SET stock = (stock - :new.nbritems) WHERE numReference = :new.numreference;
-end if;
+	
+	SELECT stock
+	INTO qqt
+	FROM Produit
+ 	WHERE numReference = :NEW.numreference;
+
+	IF :NEW.nbritems > qqt THEN 
+		raise_application_error(-20101, 'Nombre commandé supérieur au stock existant.');
+	END IF;
 END;
 /
+
+CREATE OR REPLACE TRIGGER Actualiser_Stock_Produit
+AFTER INSERT ON Livraisons 
+FOR EACH ROW
+
+BEGIN
+	UPDATE CommandeProduit SET nbrItems = (nbrItems - :New.nbrItems) WHERE numReference = :NEW.numReference;	
+	UPDATE Produit SET stock = (stock - :NEW.nbritems) WHERE numReference = :NEW.numreference;
+END;
+/
+
+CREATE OR REPLACE TRIGGER Valider_Stock_Commande 
+BEFORE INSERT ON Livraisons 
+FOR EACH ROW
+
+DECLARE
+	qqt INTEGER;
+
+BEGIN
+	
+	SELECT nbritems 
+	INTO qqt
+	FROM CommandeProduit
+	WHERE numReference = :NEW.numreference;
+
+	IF :NEW.nbritems > qqt THEN 
+		raise_application_error(-20102, 'Nombre commandé est supérieur au stock de la commande.');
+	END IF;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER Valider_Paiement
+BEFORE INSERT ON Paiement 
+FOR EACH ROW
+
+DECLARE
+	montantFacture number(10,2);
+
+BEGIN
+  
+	SELECT prixTotal 
+  INTO montantFacture 
+  FROM Facture 
+  WHERE Facture.numLivraison = :NEW.numLivraison;
+	
+	IF :NEW.montant > montantFacture THEN 
+    raise_application_error(-20103, 'Montant du paiement est superieur au montant de la facture');
+	END IF;
+END;
+/
+

@@ -42,49 +42,7 @@ INSERT
 INTO Adresse
 VALUES('G6Z-3T1', 'CHN', 56789, 'Zhouqing', 'Wang'); 
 
---Insertion des données de la table Commande
-INSERT
-INTO Commande
-VALUES(numCommande.nextval, TO_DATE('1912-04-01'), 'livrer');
-
-INSERT
-INTO Commande
-VALUES(numCommande.nextval, TO_DATE('2001-09-30'), 'livrer');
-
-INSERT
-INTO Commande
-VALUES(numCommande.nextval, TO_DATE('2020-10-12'), 'preparer');
-
-INSERT
-INTO Commande
-VALUES(numCommande.nextval, TO_DATE('2020-01-01'), 'livrer');
-
-INSERT
-INTO Commande
-VALUES(numCommande.nextval, TO_DATE('2019-12-25'), 'preparer');
-
---Insertion des données de la table CommandeProduit
-INSERT
-INTO CommandeProduit
-VALUES(2,6,4);
-
-INSERT
-INTO CommandeProduit
-VALUES(3,5,1);
-
-INSERT
-INTO CommandeProduit
-VALUES(4,4,9);
-
-INSERT
-INTO CommandeProduit
-VALUES(5,3,12);
-
-INSERT
-INTO CommandeProduit
-VALUES(6,2,122);
-
---Insertion des données de la table Individu
+--Insertions des données de la table Individu
 
 INSERT
 INTO Individu
@@ -105,3 +63,162 @@ VALUES(codeIndividu.nextval, '(800)-164-8934','Secret3', 'H2S-3T1');
 INSERT
 INTO Individu
 VALUES(codeIndividu.nextval, '(514)-435-1458','Secret4', 'G6Z-3T1');  
+
+INSERT
+INTO Individu
+VALUES(codeIndividu.nextval, '(514)-524-6454', 'Secret5', 'G6Z-3T1');
+
+INSERT
+INTO Individu
+VALUES(codeIndividu.nextval, '(450)-156-8797', 'Secret6', 'B1C-3T1');
+
+INSERT
+INTO Individu
+VALUES(codeIndividu.nextval, '(438)-003-5438', 'Secret7', 'H2S-3T1');
+
+INSERT
+INTO Individu
+VALUES(codeIndividu.nextval, '(514)-233-5349', 'Secret8', 'H2S-3T1');
+
+INSERT
+INTO Individu
+VALUES(codeIndividu.nextval, '(438)-665-4368', 'Secret9', 'A5B-3T1');
+
+INSERT
+INTO Individu
+VALUES(codeIndividu.nextval, '(514)-583-1523', 'Secret10', 'B1C-3T1');
+
+--Insertions des données de la table Client
+
+INSERT
+INTO Client
+VALUES(2, 'Alor', 'Jeanie', 'qualite1', 'souffrance'); 
+
+INSERT
+INTO Client
+VALUES(3, 'Feore', 'Jacque', 'qualite2', 'paye');
+
+INSERT
+INTO Client
+VALUES(4, 'Berger', 'Maxime', 'qualite3', 'souffrance');
+
+INSERT
+INTO Client
+VALUES(5, 'Lebois', 'Joel', 'qualite4', 'paye');
+
+INSERT
+INTO Client
+VALUES(6, 'Malumba', 'Angele', 'qualite5', 'souffrance');
+
+--Insertions des données de la table Fournisseur
+
+INSERT
+INTO Fournisseur
+VALUES(7, 'Transformateur', 'Present'); 
+
+INSERT
+INTO Fournisseur
+VALUES(8, 'Importateur', 'lent');
+
+INSERT
+INTO Fournisseur
+VALUES(9, 'Livreur', 'incompetant');
+
+INSERT
+INTO Fournisseur
+VALUES(10, 'Livreur', 'pas cher');
+
+INSERT
+INTO Fournisseur
+VALUES(11, 'Importateur', 'Vrac');
+
+--Insertions des données de la table ProduitFournisseur
+
+INSERT
+INTO ProduitFournisseur
+VALUES(7, 2, 1);
+
+INSERT
+INTO ProduitFournisseur
+VALUES(8,3,2);
+
+INSERT
+INTO ProduitFournisseur
+VALUES(9,4,3);
+
+INSERT
+INTO ProduitFournisseur
+VALUES(10,5,4);
+
+INSERT
+INTO ProduitFournisseur
+VALUES(11,6,1);
+
+--Insertion des données de la table Commande
+
+
+INSERT
+INTO Commande
+VALUES(numCommande.nextval, TO_DATE('1912-04-01'), 'livrer', 2);
+
+INSERT
+INTO Commande
+VALUES(numCommande.nextval, TO_DATE('2001-09-30'), 'livrer', 3);
+
+INSERT
+INTO Commande
+VALUES(numCommande.nextval, TO_DATE('2020-10-12'), 'preparer', 4);
+
+INSERT
+INTO Commande
+VALUES(numCommande.nextval, TO_DATE('2020-01-01'), 'livrer', 5);
+
+INSERT
+INTO Commande
+VALUES(numCommande.nextval, TO_DATE('2019-12-25'), 'preparer', 6);
+
+--Insertion des données de la table CommandeProduit
+
+INSERT
+INTO CommandeProduit
+VALUES(2,6,4);
+
+INSERT
+INTO CommandeProduit
+VALUES(3,5,1);
+
+INSERT
+INTO CommandeProduit
+VALUES(4,4,9);
+
+INSERT
+INTO CommandeProduit
+VALUES(5,3,12);
+
+INSERT
+INTO CommandeProduit
+VALUES(6,2,122);
+
+--Insertions des données de la table Livraisons
+
+INSERT
+INTO Livraisons
+VALUES(numlivraisons.nextval, 2, 6, TO_DATE('2019-05-04'), TO_DATE('2019-05-07'), 4); 
+
+INSERT
+INTO Livraisons
+VALUES(numLivraisons.nextval, 4,4, TO_DATE('2018-02-23'), TO_DATE('2018-03-01'), 4);
+
+INSERT
+INTO Livraisons
+VALUES(numlivraisons.nextval, 5,3, TO_DATE('2020-11-02'), TO_DATE('2020-11-02'), 6);
+
+INSERT
+INTO Livraisons
+VALUES(numlivraisons.nextval, 6,2, TO_DATE('1999-06-16'), TO_DATE('2020-02-02'), 100);
+
+INSERT
+INTO Livraisons
+VALUES(numlivraisons.nextval, 6,2, TO_DATE('2020-12-03'), TO_DATE('2020-12-04'), 20);
+
+--Insertions des données de la table 

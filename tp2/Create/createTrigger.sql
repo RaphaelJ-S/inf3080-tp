@@ -5,7 +5,7 @@ BEFORE INSERT ON Livraisons
 FOR EACH ROW
 
 DECLARE
-	qqt INTEGER;
+	qqt INTEGER := 0;
 
 BEGIN
 	
@@ -25,7 +25,7 @@ AFTER INSERT ON Livraisons
 FOR EACH ROW
 
 BEGIN
-	UPDATE CommandeProduit SET nbrItems = (nbrItems - :New.nbrItems) WHERE numReference = :NEW.numReference;	
+	UPDATE CommandeProduit SET nbrItems = (nbrItems - :New.nbrItems) WHERE numReference = :NEW.numReference AND numCommande = :NEW.numCommande;	
 	UPDATE Produit SET stock = (stock - :NEW.nbritems) WHERE numReference = :NEW.numreference;
 END;
 /
@@ -35,17 +35,17 @@ BEFORE INSERT ON Livraisons
 FOR EACH ROW
 
 DECLARE
-	qqt INTEGER;
+	qqt INTEGER := 0;
 
 BEGIN
 	
 	SELECT nbritems 
 	INTO qqt
 	FROM CommandeProduit
-	WHERE numReference = :NEW.numreference;
+	WHERE numReference = :NEW.numreference AND numCommande = :NEW.numCommande;
 
 	IF :NEW.nbritems > qqt THEN 
-		raise_application_error(-20102, 'Nombre commandé est suérieur au stock de la commande.');
+		raise_application_error(-20102, 'Nombre commandé est supérieur au stock de la commande.');
 	END IF;
 END;
 /
@@ -56,7 +56,7 @@ BEFORE INSERT ON Paiement
 FOR EACH ROW
 
 DECLARE
-	montantFacture number(10,2);
+	montantFacture number(10,2) := 0;
 
 BEGIN
   

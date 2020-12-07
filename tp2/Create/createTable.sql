@@ -11,16 +11,7 @@ CREATE TABLE Produit(
   stock number(4) NOT NULL,
   PRIMARY KEY(numReference)
 );
---Livraison tmp, vérifier les autres références à cette table
-CREATE TABLE Livraisons(
-  numLivraison number(20),
-  numReference number(20) NOT NULL,
-  dateJour date NOT NULL,
-  dateLivraison date NOT NULL,
-  nbrItems number(10) NOT NULL,
-  PRIMARY KEY(numLivraison),
-  FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE 
-);
+
 CREATE TABLE Adresse (
   codePostal varchar2(7) NOT NULL,
   pays varchar2(5) NOT NULL,
@@ -39,7 +30,6 @@ CREATE TABLE Individu(
   FOREIGN KEY(codePostal) REFERENCES Adresse ON DELETE CASCADE
 );
 
-
 CREATE TABLE Commande(
   numCommande number(20) NOT NULL,
   dateCommande date NOT NULL, 
@@ -49,6 +39,17 @@ CREATE TABLE Commande(
   FOREIGN KEY(codeIndividu) REFERENCES Individu ON DELETE CASCADE
 );
 
+CREATE TABLE Livraisons(
+  numLivraison number(20),
+  numReference number(20) NOT NULL,
+  numCommande number(20) NOT NULL,
+	dateJour date NOT NULL,
+  dateLivraison date NOT NULL,
+  nbrItems number(10) NOT NULL,
+  PRIMARY KEY(numLivraison),
+	FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE,
+	FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE 
+);
 CREATE TABLE Paiement(
   numPaiement number(20) NOT NULL,
   numLivraison number(20) NOT NULL,
@@ -85,16 +86,7 @@ CREATE TABLE CommandeProduit(
   FOREIGN KEY(numReference) REFERENCES Produit ON DELETE CASCADE,
   FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE
 );  
-/*
-CREATE TABLE ModificationPrix (
-  numMod number(20) not null,
-  dateMod date not null,
-  nouvPrix number(10,2) not null,
-  numReference number(20) not null,
-  foreign key(numReference) references Produit ON DELETE CASCADE,
-  primary key(numMod)
-);
-*/
+
 CREATE TABLE Fournisseur(
   codeIndividu number(20) NOT NULL,
   typeFourn varchar2(50) NOT NULL,
@@ -112,7 +104,7 @@ CREATE TABLE Client(
   PRIMARY KEY(codeIndividu),
   FOREIGN KEY(codeIndividu) REFERENCES Individu ON DELETE CASCADE
 );
-
+/*
 CREATE TABLE CommandeLivraison(
   numCommande number(20),
   numLivraison number(20),
@@ -120,6 +112,7 @@ CREATE TABLE CommandeLivraison(
   FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE,
   FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
 );
+*/
 CREATE TABLE ProduitFournisseur(
   codeIndividu number(20) NOT NULL,
   numReference number(20) NOT NULL,
