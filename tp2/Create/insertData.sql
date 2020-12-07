@@ -24,23 +24,23 @@ VALUES(numReference.nextval, 425, 'Couche pour adulte', 'Couc', 25.34, TO_DATE('
 --Insertion des données de la table Adresse
 INSERT
 INTO Adresse
-VALUES('H2S-3T1', 'CAN', 12345, 'Quebec', 'Random',1);
+VALUES('H2S-3T1', 'CAN', 12345, 'Quebec', 'Random');
 
 INSERT
 INTO Adresse
-VALUES('A5B-3T1', 'USA', 23456, 'Boston', 'Bay',2); 
+VALUES('A5B-3T1', 'USA', 23456, 'Boston', 'Bay'); 
 
 INSERT
 INTO Adresse
-VALUES('B1C-3T1', 'FR', 34567, 'Paris', 'Rochelle',3); 
+VALUES('B1C-3T1', 'FR', 34567, 'Paris', 'Rochelle'); 
 
 INSERT
 INTO Adresse
-VALUES('L8I-3T1', 'MEX', 45678, 'Aguella', 'Payo',4); 
+VALUES('L8I-3T1', 'MEX', 45678, 'Aguella', 'Payo'); 
 
 INSERT
 INTO Adresse
-VALUES('G6Z-3T1', 'CHN', 56789, 'Zhouqing', 'Wang',5); 
+VALUES('G6Z-3T1', 'CHN', 56789, 'Zhouqing', 'Wang'); 
 
 --Insertions des données de la table Individu
 
