@@ -161,7 +161,10 @@ ADD CONSTRAINT nbrItems_Valide CHECK (nbrItems >=0);
 ALTER TABLE Fournisseur
 ADD CONSTRAINT typeFourn_Valide CHECK
 (typeFourn IN ('Transformateur', 'Importateur', 'Livreur'));
-
+	       
+ALTER TABLE Adresse 
+ADD codeIndividu NUMBER(20);
+	       
 ALTER TABLE Adresse
 ADD FOREIGN KEY (codeIndividu) REFERENCES Individu ON DELETE CASCADE	       
 	       
