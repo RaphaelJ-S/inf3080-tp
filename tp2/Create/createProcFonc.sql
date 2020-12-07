@@ -44,14 +44,13 @@ create procedure ProduireFacture(numLivr in number, dateLimite in date)
     prix_total_c     number(10, 2);
     c_num_commande   number(20);
 
-Begin
-    SELECT *
+begin
+    SELECT codePostal, pays, numCiv, ville, rue
     into adresse_complete
     FROM Adresse
-    where ADRESSE.CODEINDIVIDU = (select CODEINDIVIDU
-                                  from Facture
-                                  Where numLivraison = numLivr
-    );
+             INNER JOIN individu using (codepostal)
+             INNER JOIN Facture ON NUMLIVRAISON = numlivr;
+
 
     select CODEINDIVIDU into num_client_c from Facture Where numLivraison = numLivr;
 
@@ -89,27 +88,28 @@ Begin
     dbms_output.put_line('Date de Livraison: ' || date_livraison_c);
 
 
-DECLARE
-            CURSOR cur_liste_commande IS
-                SELECT LIVRAISONS.NUMCOMMANDE, CODEZEBRE, PRIXVENTE, TYPEPRODUIT
-                into c_num_commande
-                FROM LIVRAISONS inner join COMMANDEPRODUIT C2 on LIVRAISONS.NUMCOMMANDE = C2.NUMCOMMANDE
-                    INNER JOIN PRODUIT P on P.NUMREFERENCE = C2.NUMREFERENCE
-                    INNER JOIN EXEMPLAIRE E on LIVRAISONS.NUMLIVRAISON = E.NUMLIVRAISON
-                WHERE LIVRAISONS.NUMLIVRAISON = numLivr;
-            produits_commandes cur_liste_commande%ROWTYPE;
-        BEGIN
-            OPEN cur_liste_commande;
-            LOOP
-                FETCH cur_liste_commande INTO produits_commandes;
-              dbms_output.put_line('#Produit : ' || produits_commandes.TYPEPRODUIT);
-              DBMS_OUTPUT.put_line('Code Zebre : ' || produits_commandes.CODEZEBRE);
-              dbms_output.put_line('#Commande : ' || produits_commandes.NUMCOMMANDE);
-              dbms_output.put_line('Prix : ' || produits_commandes.PRIXVENTE);
-                EXIT WHEN cur_liste_commande%NOTFOUND;
-            END LOOP;
-            CLOSE cur_liste_commande;
-        end;
+    DECLARE
+        CURSOR cur_liste_commande IS
+            SELECT LIVRAISONS.NUMCOMMANDE, CODEZEBRE, PRIXVENTE, TYPEPRODUIT
+            into c_num_commande
+            FROM LIVRAISONS
+                     inner join COMMANDEPRODUIT C2 on LIVRAISONS.NUMCOMMANDE = C2.NUMCOMMANDE
+                     INNER JOIN PRODUIT P on P.NUMREFERENCE = C2.NUMREFERENCE
+                     INNER JOIN EXEMPLAIRE E on LIVRAISONS.NUMLIVRAISON = E.NUMLIVRAISON
+            WHERE LIVRAISONS.NUMLIVRAISON = numLivr;
+        produits_commandes cur_liste_commande%ROWTYPE;
+    BEGIN
+        OPEN cur_liste_commande;
+        LOOP
+            FETCH cur_liste_commande INTO produits_commandes;
+            dbms_output.put_line('#Produit : ' || produits_commandes.TYPEPRODUIT);
+            DBMS_OUTPUT.put_line('Code Zebre : ' || produits_commandes.CODEZEBRE);
+            dbms_output.put_line('#Commande : ' || produits_commandes.NUMCOMMANDE);
+            dbms_output.put_line('Prix : ' || produits_commandes.PRIXVENTE);
+            EXIT WHEN cur_liste_commande%NOTFOUND;
+        END LOOP;
+        CLOSE cur_liste_commande;
+    end;
     /*
      DECLARE
             CURSOR cur_liste_produit IS
@@ -146,13 +146,11 @@ DECLARE
         FROM EXEMPLAIRE
         where NUMREFERENCE = info_produits.NUMREFERENCE;
 */
-        DBMS_OUTPUT.PUT_LINE('Date Limite de paiement : '|| dateLimite);
-        dbms_output.put_line('Prix Sous-Total: ' || prix_soustotal_c);
-        dbms_output.put_line('Montant des Taxes: ' || taxes_c);
-        dbms_output.put_line('Prix Total: ' || prix_total_c);
-    end;
+    DBMS_OUTPUT.PUT_LINE('Date Limite de paiement : ' || dateLimite);
+    dbms_output.put_line('Prix Sous-Total: ' || prix_soustotal_c);
+    dbms_output.put_line('Montant des Taxes: ' || taxes_c);
+    dbms_output.put_line('Prix Total: ' || prix_total_c);
+end;
 /
-
-
 
 
