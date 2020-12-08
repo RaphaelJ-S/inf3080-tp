@@ -56,7 +56,7 @@ create or replace procedure ProduireFacture(numLivr in number, dateLimite_f in d
                  INNER JOIN COMMANDEPRODUIT C2 on LIVRAISONS.NUMCOMMANDE = C2.NUMCOMMANDE
                  INNER JOIN PRODUIT P on P.NUMREFERENCE = C2.NUMREFERENCE
                  INNER JOIN EXEMPLAIRE E on LIVRAISONS.NUMLIVRAISON = E.NUMLIVRAISON
-        WHERE LIVRAISONS.NUMLIVRAISON = 2;
+        WHERE LIVRAISONS.NUMLIVRAISON = numLivr;
     produits_commandes cur_liste_commande%ROWTYPE;
 
 BEGIN
