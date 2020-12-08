@@ -37,8 +37,6 @@ create or replace procedure ProduireFacture(numLivr in number, dateLimite_f in d
     num_livraison_c    number(20);
     date_livraison_c   date;
     prix_soustotal_c   number(10, 2);
-    taxes_c            number(10, 2);
-    prix_total_c       number(10, 2);
     dateLimite_c       date;
     e_rue              varchar(10) ;
     e_ville            varchar(10) ;
