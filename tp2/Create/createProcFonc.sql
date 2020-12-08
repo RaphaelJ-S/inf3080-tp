@@ -1,20 +1,17 @@
-create procedure QuantiteDejaLivree(numRef in number, numCom in number)
+create or replace procedure QuantiteDejaLivree(numRef in number, numCom in number)
     is
-    nbr_items_c number(4);
-    correspond  number(20);
+    num_livr    number(20);
+    date_livr   date;
+    nbr_items_c number(20);
+
 begin
-
-    select numLivraison into correspond from LIVRAISON Where numCommande = numCom;
-    select count(codeZebre) from Exemplaire WHERE numLivraison = correspond AND numReference = numRef;
-    select nbrItems
-    into nbr_items_c
-    from COMMANDEPRODUIT
-    where numRef = numReference
-      and numCom = numCommande;
-    dbms_output.put_line('Quantite deja livree: ' || nbr_items_c);
+    select NUMLIVRAISON into num_livr from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;
+    select DATELIVRAISON into date_livr from LIVRAISONS where NUMLIVRAISON = num_livr;
+    if date_livr < SYSDATE THEN
+        select NBRITEMS into nbr_items_c from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;
+        dbms_output.put_line('Quantite deja livree: ' || nbr_items_c);
+    END IF;
 end;
-/
-
 
 
 
@@ -36,20 +33,23 @@ create procedure ProduireFacture(numLivr in number, dateLimite in date)
     num_client_c     number(20);
     nom_client_c     varchar(50);
     prenom_client_c  varchar(50);
-    adresse_complete Adresse%rowtype;
     num_livraison_c  number(20);
     date_livraison_c date;
     prix_soustotal_c number(10, 2);
     taxes_c          number(10, 2);
     prix_total_c     number(10, 2);
     c_num_commande   number(20);
-
+    rue_c    varchar(10) ;
+    ville_c  varchar(10) ;
+    numCiv_c varchar(10) ;
+    pays_c   varchar(10) ;
+    cp_c     varchar(10) ;
 begin
+
     SELECT codePostal, pays, numCiv, ville, rue
-    into adresse_complete
+    INTO cp_c, pays_c, numCiv_c, ville_c, rue_c
     FROM Adresse
-             INNER JOIN individu using (codepostal)
-             INNER JOIN Facture ON NUMLIVRAISON = numlivr;
+    where codepostal = (SELECT codePostal from INDIVIDU where CODEINDIVIDU = (Select CODEINDIVIDU From FACTURE where NUMLIVRAISON = numLivr));
 
 
     select CODEINDIVIDU into num_client_c from Facture Where numLivraison = numLivr;
@@ -79,11 +79,11 @@ begin
     dbms_output.put_line('Nom du Client: ' || nom_client_c);
     dbms_output.put_line('Prenom du Client: ' || prenom_client_c);
     dbms_output.put_line('Adresse du Client ');
-    dbms_output.put_line('Numero Civique: ' || adresse_complete.NUMCIV);
-    dbms_output.put_line('Rue: ' || adresse_complete.RUE);
-    dbms_output.put_line('Code Postal: ' || adresse_complete.CODEPOSTAL);
-    dbms_output.put_line('Ville: ' || adresse_complete.Ville);
-    dbms_output.put_line('Pays: ' || adresse_complete.Pays);
+    dbms_output.put_line('Numero Civique: ' || numCiv_c);
+    dbms_output.put_line('Rue: ' || rue_c);
+    dbms_output.put_line('Code Postal: ' || cp_c);
+    dbms_output.put_line('Ville: ' || ville_c);
+    dbms_output.put_line('Pays: ' || pays_c);
     dbms_output.put_line('Numero de Livraison: ' || num_livraison_c);
     dbms_output.put_line('Date de Livraison: ' || date_livraison_c);
 
@@ -152,5 +152,6 @@ begin
     dbms_output.put_line('Prix Total: ' || prix_total_c);
 end;
 /
+
 
 
