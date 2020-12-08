@@ -52,7 +52,7 @@ create or replace procedure ProduireFacture(numLivr in number, dateLimite_f in d
     c_num_commande     varchar(20);
     CURSOR cur_liste_commande IS
         SELECT LIVRAISONS.NUMLIVRAISON, LIVRAISONS.NUMCOMMANDE, CODEZEBRE, PRIXVENTE, TYPEPRODUIT
-        into c_num_livraison, c_num_commande, c_code_zebre, c_prix_vente, c_type_produit
+        INTO c_num_livraison, c_num_commande, c_code_zebre, c_prix_vente, c_type_produit
         FROM LIVRAISONS
                  INNER JOIN COMMANDEPRODUIT C2 on LIVRAISONS.NUMCOMMANDE = C2.NUMCOMMANDE
                  INNER JOIN PRODUIT P on P.NUMREFERENCE = C2.NUMREFERENCE
@@ -60,43 +60,43 @@ create or replace procedure ProduireFacture(numLivr in number, dateLimite_f in d
         WHERE LIVRAISONS.NUMLIVRAISON = 2;
     produits_commandes cur_liste_commande%ROWTYPE;
 
-begin
+BEGIN
 
     SELECT codePostal, pays, numCiv, ville, rue
     INTO e_cp, e_pays, e_numCiv, e_ville, e_rue
     FROM Adresse
-    where codepostal =
+    WHERE codepostal =
           (SELECT codePostal
-           from INDIVIDU
-           where CODEINDIVIDU =
-                 (Select CODEINDIVIDU
-                  From FACTURE
-                  where NUMLIVRAISON = numLivr));
+           FROM INDIVIDU
+           WHERE CODEINDIVIDU =
+                 (SELECT CODEINDIVIDU
+                  FROM FACTURE
+                  WHERE NUMLIVRAISON = numLivr));
 
-    select CODEINDIVIDU into num_client_c from Facture Where numLivraison = numLivr;
+    SELECT CODEINDIVIDU INTO num_client_c FROM Facture WHERE numLivraison = numLivr;
 
-    select nom
-    into nom_client_c
-    from Client
-             INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU;
+    SELECT nom
+    INTO nom_client_c
+    FROM Client
+             INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU and Facture.NUMLIVRAISON = numLivr;
 
-    select prenom
-    into prenom_client_c
-    from Client
-             INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU;
 
-    select numLivraison into num_livraison_c from Facture Where numLivraison = numLivr;
+    SELECT prenom
+    INTO prenom_client_c
+    FROM Client
+             INNER JOIN Facture ON Client.codeIndividu = Facture.CODEINDIVIDU and Facture.NUMLIVRAISON = numLivr;
 
-    select DATELIVRAISON into date_livraison_c from LIVRAISONS Where numLivraison = numLivr;
+    SELECT numLivraison INTO num_livraison_c FROM Facture WHERE numLivraison = numLivr;
 
-    select prixSousTotal into prix_soustotal_c from Facture Where numLivraison = numLivr;
+    SELECT DATELIVRAISON INTO date_livraison_c FROM LIVRAISONS WHERE numLivraison = numLivr;
 
-    select taxes into taxes_c from Facture Where numLivraison = numLivr;
+    SELECT prixSousTotal INTO prix_soustotal_c FROM Facture WHERE numLivraison = numLivr;
 
-    select prixTotal into prix_total_c from Facture Where numLivraison = numLivr;
+    SELECT taxes INTO taxes_c FROM Facture WHERE numLivraison = numLivr;
 
-    select datepayerLim into dateLimite_c from FACTURE where datepayerlim = dateLimite_f;
-                                                                                                                               
+    SELECT prixTotal INTO prix_total_c FROM Facture WHERE numLivraison = numLivr;
+
+    SELECT datePayerLim INTO dateLimite_c FROM FACTURE WHERE datePayerLim = dateLimite_f;
 
     dbms_output.put_line('**********Facture Client**********');
     dbms_output.put_line('Numero du Client: ' || num_client_c);
@@ -126,8 +126,10 @@ begin
     dbms_output.put_line('Prix Sous-Total: ' || prix_soustotal_c);
     dbms_output.put_line('Montant des Taxes: ' || taxes_c);
     dbms_output.put_line('Prix Total: ' || prix_total_c);
-end;
+END;
 /
+
+
 
 
 
