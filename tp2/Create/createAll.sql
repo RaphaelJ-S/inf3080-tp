@@ -143,7 +143,8 @@ CREATE TABLE Facture(
   taxes number(10,2) NOT NULL,
   prixTotal number(10,2) NOT NULL,
   etatFacture varchar2(14) NOT NULL,
-  codeIndividu number(20) NOT NULL,
+  datePayerLim date NOT NULL,
+	codeIndividu number(20) NOT NULL,
   PRIMARY KEY(numLivraison),
   FOREIGN KEY(codeIndividu) REFERENCES Client ON DELETE CASCADE,
   FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE

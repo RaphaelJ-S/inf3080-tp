@@ -106,15 +106,7 @@ CREATE TABLE Client(
   PRIMARY KEY(codeIndividu),
   FOREIGN KEY(codeIndividu) REFERENCES Individu ON DELETE CASCADE
 );
-/*
-CREATE TABLE CommandeLivraison(
-  numCommande number(20),
-  numLivraison number(20),
-  PRIMARY KEY(numCommande, numLivraison),
-  FOREIGN KEY(numCommande) REFERENCES Commande ON DELETE CASCADE,
-  FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE
-);
-*/
+
 CREATE TABLE ProduitFournisseur(
   codeIndividu number(20) NOT NULL,
   numReference number(20) NOT NULL,
@@ -130,7 +122,8 @@ CREATE TABLE Facture(
   taxes number(10,2) NOT NULL,
   prixTotal number(10,2) NOT NULL,
   etatFacture varchar2(15) NOT NULL,
-  codeIndividu number(20) NOT NULL,
+  datePayerLim date NOT NULL,
+	codeIndividu number(20) NOT NULL,
   PRIMARY KEY(numLivraison),
   FOREIGN KEY(codeIndividu) REFERENCES Client ON DELETE CASCADE,
   FOREIGN KEY(numLivraison) REFERENCES Livraisons ON DELETE CASCADE

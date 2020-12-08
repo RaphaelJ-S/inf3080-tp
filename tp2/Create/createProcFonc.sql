@@ -12,7 +12,7 @@ begin
         dbms_output.put_line('Quantite deja livree: ' || nbr_items_c);
     END IF;
 end;
-
+/
 
 
 create or replace procedure TotalFacture(numFac in number)
@@ -26,7 +26,7 @@ begin
     where numFac = numLivraison;
     dbms_output.put_line('Montant total de la facture: ' || montant_total_c);
 end;
-
+/
 
 create procedure ProduireFacture(numLivr in number, dateLimite in date)
     is

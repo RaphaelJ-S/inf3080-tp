@@ -248,23 +248,23 @@ VALUES(5445, 4, 3);
 
 INSERT
 INTO Facture
-VALUES(2, 200, 1.15, 215, 'non payee', 2);
+VALUES(2, 200, 1.15, 215, 'non payee',TO_DATE('2021-01-01'),  2);
 
 INSERT
 INTO Facture
-VALUES(3, 100, 1.15, 115, 'paye partiel', 3);
+VALUES(3, 100, 1.15, 115, 'paye partiel', TO_DATE('2020-02-02'), 3);
 
 INSERT
 INTO Facture
-VALUES(4, 150, 1.15, 172.5, 'non payee', 4);
+VALUES(4, 150, 1.15, 172.5, 'non payee', TO_DATE('2020-03-03'), 4);
 
 INSERT
 INTO Facture
-VALUES(5, 435, 1.15, 500.25, 'payee', 5);
+VALUES(5, 435, 1.15, 500.25, 'payee', TO_DATE('2020-04-04'), 5);
 
 INSERT
 INTO Facture
-VALUES(6, 1000, 1.15, 1150, 'paye partiel', 6);
+VALUES(6, 1000, 1.15, 1150, 'paye partiel', TO_DATE('2020-05-05'), 6);
 
 --Insertions des données de la table Paiement
 
