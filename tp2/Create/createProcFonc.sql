@@ -38,6 +38,7 @@ create or replace procedure ProduireFacture(numLivr in number, dateLimite_f in d
     date_livraison_c   date;
     prix_soustotal_c   number(10, 2);
     dateLimite_c       date;
+    
     e_rue              varchar(10) ;
     e_ville            varchar(10) ;
     e_numCiv           varchar(10) ;
@@ -86,9 +87,12 @@ BEGIN
     SELECT numLivraison INTO num_livraison_c FROM Facture WHERE numLivraison = numLivr;
 
     SELECT DATELIVRAISON INTO date_livraison_c FROM LIVRAISONS WHERE numLivraison = numLivr;
+    
+    SELECT prixSousTotal INTO prix_soustotal_c FROM Facture WHERE numLivraison = numLivr;
 
 
---     SELECT datePayerLim INTO dateLimite_c FROM FACTURE WHERE datePayerLim = dateLimite_f;
+
+    SELECT datePayerLim INTO dateLimite_c FROM FACTURE WHERE datePayerLim = dateLimite_f;
 
     dbms_output.put_line('**********Facture Client**********');
     dbms_output.PUT_LINE(' ');
@@ -116,7 +120,6 @@ BEGIN
         dbms_output.put_line('#Commande : ' || produits_commandes.NUMCOMMANDE);
         dbms_output.put_line('Prix : ' || produits_commandes.PRIXVENTE);
         dbms_output.PUT_LINE(' ');
-        prix_soustotal_c := prix_soustotal_c + produits_commandes.PRIXVENTE;
         EXIT WHEN cur_liste_commande%NOTFOUND;
     END LOOP;
     CLOSE cur_liste_commande;
@@ -126,7 +129,7 @@ BEGIN
     dbms_output.PUT_LINE(' ');
     dbms_output.PUT_LINE(' ');
     dbms_output.put_line('Prix Sous-Total: ' || prix_soustotal_c || '$');
-    dbms_output.put_line('Montant des Taxes: ' || prix_soustotal_c * 0.15 || '$');
+    dbms_output.put_line('Montant des Taxes: ' || prix_soustotal_c *0.15|| '$');
     dbms_output.put_line('Prix Total: ' || prix_soustotal_c * 1.15 || '$');
 END;
 
