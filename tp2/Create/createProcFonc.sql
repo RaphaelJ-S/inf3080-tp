@@ -8,12 +8,10 @@ begin
     select NUMLIVRAISON into num_livr from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;
     select DATELIVRAISON into date_livr from LIVRAISONS where NUMLIVRAISON = num_livr;
     if date_livr < SYSDATE THEN
-        select NBRITEMS into nbr_items_c from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;
-        return nbr_items_c;
+        select NBRITEMS into nbr_items_c from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;        return nbr_items_c;
     END IF;
 end;
 /
-
 
 create or replace function TotalFacture(numFac in number)
     is
@@ -110,42 +108,7 @@ begin
         END LOOP;
         CLOSE cur_liste_commande;
     end;
-    /*
-     DECLARE
-            CURSOR cur_liste_produit IS
-                SELECT *
-                FROM COMMANDEPRODUIT
-                WHERE c_num_commande = NUMCOMMANDE;
-            liste_produits COMMANDEPRODUIT%ROWTYPE;
-        BEGIN
-            OPEN cur_liste_produit;
-            LOOP
-                FETCH cur_liste_produit INTO liste_produits;
-                EXIT WHEN cur_liste_produit%NOTFOUND;
-            END LOOP;
-            CLOSE cur_liste_produit;
-        end;
-
-        DECLARE
-            CURSOR cur_info_produit IS
-                SELECT *
-                FROM PRODUIT
-                WHERE liste_produits.NUMREFERENCE = PRODUIT.NUMREFERENCE;
-            info_produits PRODUIT%ROWTYPE;
-        BEGIN
-            OPEN cur_info_produit;
-            LOOP
-                FETCH cur_info_produit INTO info_produits;
-                EXIT WHEN cur_info_produit%NOTFOUND;
-            END LOOP;
-            CLOSE cur_info_produit;
-        end;
-
-        select CODEZEBRE
-        into code_zebre_c
-        FROM EXEMPLAIRE
-        where NUMREFERENCE = info_produits.NUMREFERENCE;
-*/
+  
     DBMS_OUTPUT.PUT_LINE('Date Limite de paiement : ' || dateLimite);
     dbms_output.put_line('Prix Sous-Total: ' || prix_soustotal_c);
     dbms_output.put_line('Montant des Taxes: ' || taxes_c);
