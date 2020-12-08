@@ -1,4 +1,4 @@
-create or replace procedure QuantiteDejaLivree(numRef in number, numCom in number)
+create or replace function QuantiteDejaLivree(numRef in number, numCom in number)
     is
     num_livr    number(20);
     date_livr   date;
@@ -9,13 +9,13 @@ begin
     select DATELIVRAISON into date_livr from LIVRAISONS where NUMLIVRAISON = num_livr;
     if date_livr < SYSDATE THEN
         select NBRITEMS into nbr_items_c from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;
-        dbms_output.put_line('Quantite deja livree: ' || nbr_items_c);
+        return nbr_items_c;
     END IF;
 end;
+/
 
 
-
-create or replace procedure TotalFacture(numFac in number)
+create or replace function TotalFacture(numFac in number)
     is
     montant_total_c number(10, 2);
 begin
@@ -24,9 +24,9 @@ begin
     into montant_total_c
     from Facture
     where numFac = numLivraison;
-    dbms_output.put_line('Montant total de la facture: ' || montant_total_c);
+    return montant_total_c;
 end;
-
+/
 
 create procedure ProduireFacture(numLivr in number, dateLimite in date)
     is
