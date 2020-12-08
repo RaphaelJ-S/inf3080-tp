@@ -1,8 +1,9 @@
 create or replace function QuantiteDejaLivree(numRef in number, numCom in number)
-    is
+return number 
+is
     num_livr    number(20);
     date_livr   date;
-    nbr_items_c number(20);
+    nbr_items_c number(20) := 0;
 
 begin
     select NUMLIVRAISON into num_livr from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;
@@ -16,8 +17,9 @@ end;
 
 
 create or replace function TotalFacture(numFac in number)
-    is
-    montant_total_c number(10, 2);
+return number
+is
+    montant_total_c number(10, 2) := 0;
 begin
 
     select prixTotal
@@ -132,4 +134,4 @@ BEGIN
     dbms_output.put_line('Montant des Taxes: ' || prix_soustotal_c *0.15|| '$');
     dbms_output.put_line('Prix Total: ' || prix_soustotal_c * 1.15 || '$');
 END;
-
+/
