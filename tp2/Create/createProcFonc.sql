@@ -88,11 +88,11 @@ BEGIN
     SELECT DATELIVRAISON INTO date_livraison_c FROM LIVRAISONS WHERE numLivraison = numLivr;
 
 
-    /*SELECT datePayerLim INTO dateLimite_c FROM FACTURE WHERE datePayerLim = dateLimite_f;*/
+--     SELECT datePayerLim INTO dateLimite_c FROM FACTURE WHERE datePayerLim = dateLimite_f;
 
     dbms_output.put_line('**********Facture Client**********');
-    dbms_output.PUT_LINE('\n');
-    dbms_output.PUT_LINE('\n');
+    dbms_output.PUT_LINE(' ');
+    dbms_output.PUT_LINE(' ');
 
     dbms_output.put_line('Numero du Client: ' || num_client_c);
     dbms_output.put_line('Nom du Client: ' || nom_client_c);
@@ -105,7 +105,7 @@ BEGIN
     dbms_output.put_line('Pays: ' || e_pays);
     dbms_output.put_line('Numero de Livraison: ' || num_livraison_c);
     dbms_output.put_line('Date de Livraison: ' || date_livraison_c);
-    dbms_output.PUT_LINE('\n');
+    dbms_output.PUT_LINE(' ');
 
 
     OPEN cur_liste_commande;
@@ -115,19 +115,18 @@ BEGIN
         DBMS_OUTPUT.put_line('Code Zebre : ' || produits_commandes.CODEZEBRE);
         dbms_output.put_line('#Commande : ' || produits_commandes.NUMCOMMANDE);
         dbms_output.put_line('Prix : ' || produits_commandes.PRIXVENTE);
-        dbms_output.PUT_LINE('\n');
+        dbms_output.PUT_LINE(' ');
         prix_soustotal_c := prix_soustotal_c + produits_commandes.PRIXVENTE;
         EXIT WHEN cur_liste_commande%NOTFOUND;
     END LOOP;
     CLOSE cur_liste_commande;
 
-    dbms_output.PUT_LINE('\n');
+    dbms_output.PUT_LINE(' ');
     DBMS_OUTPUT.PUT_LINE('Date Limite de paiement : ' || dateLimite_c);
-    dbms_output.PUT_LINE('\n');
-    dbms_output.PUT_LINE('\n');
+    dbms_output.PUT_LINE(' ');
+    dbms_output.PUT_LINE(' ');
     dbms_output.put_line('Prix Sous-Total: ' || prix_soustotal_c || '$');
     dbms_output.put_line('Montant des Taxes: ' || prix_soustotal_c * 0.15 || '$');
     dbms_output.put_line('Prix Total: ' || prix_soustotal_c * 1.15 || '$');
 END;
-/
 
