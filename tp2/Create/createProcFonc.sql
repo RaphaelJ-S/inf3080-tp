@@ -8,10 +8,12 @@ begin
     select NUMLIVRAISON into num_livr from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;
     select DATELIVRAISON into date_livr from LIVRAISONS where NUMLIVRAISON = num_livr;
     if date_livr < SYSDATE THEN
-        select NBRITEMS into nbr_items_c from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;        return nbr_items_c;
+        select NBRITEMS into nbr_items_c from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;
+        return nbr_items_c;
     END IF;
 end;
 /
+
 
 create or replace function TotalFacture(numFac in number)
     is
@@ -26,7 +28,7 @@ begin
 end;
 /
 
-create procedure ProduireFacture(numLivr in number, dateLimite in date)
+create procedure ProduireFacture(numLivr in number, dateLimite_f in date)
     is
     num_client_c     number(20);
     nom_client_c     varchar(50);
@@ -37,18 +39,24 @@ create procedure ProduireFacture(numLivr in number, dateLimite in date)
     taxes_c          number(10, 2);
     prix_total_c     number(10, 2);
     c_num_commande   number(20);
-    rue_c    varchar(10) ;
-    ville_c  varchar(10) ;
-    numCiv_c varchar(10) ;
-    pays_c   varchar(10) ;
-    cp_c     varchar(10) ;
+    dateLimite_c     date;
+    e_rue            varchar(10) ;
+    e_ville          varchar(10) ;
+    e_numCiv         varchar(10) ;
+    e_pays           varchar(10) ;
+    e_cp             varchar(10) ;
 begin
 
     SELECT codePostal, pays, numCiv, ville, rue
-    INTO cp_c, pays_c, numCiv_c, ville_c, rue_c
+    INTO e_cp, e_pays, e_numCiv, e_ville, e_rue
     FROM Adresse
-    where codepostal = (SELECT codePostal from INDIVIDU where CODEINDIVIDU = (Select CODEINDIVIDU From FACTURE where NUMLIVRAISON = numLivr));
-
+    where codepostal =
+          (SELECT codePostal
+           from INDIVIDU
+           where CODEINDIVIDU =
+                 (Select CODEINDIVIDU
+                  From FACTURE
+                  where NUMLIVRAISON = numLivr));
 
     select CODEINDIVIDU into num_client_c from Facture Where numLivraison = numLivr;
 
@@ -72,29 +80,36 @@ begin
 
     select prixTotal into prix_total_c from Facture Where numLivraison = numLivr;
 
+    select datepayerlim into dateLimite_c from FACTURE where datepayerLim = dateLimite_f;
+
     dbms_output.put_line('**********Facture Client**********');
     dbms_output.put_line('Numero du Client: ' || num_client_c);
     dbms_output.put_line('Nom du Client: ' || nom_client_c);
     dbms_output.put_line('Prenom du Client: ' || prenom_client_c);
-    dbms_output.put_line('Adresse du Client ');
-    dbms_output.put_line('Numero Civique: ' || numCiv_c);
-    dbms_output.put_line('Rue: ' || rue_c);
-    dbms_output.put_line('Code Postal: ' || cp_c);
-    dbms_output.put_line('Ville: ' || ville_c);
-    dbms_output.put_line('Pays: ' || pays_c);
+    dbms_output.put_line('Adresse du Client : ');
+    dbms_output.put_line('Numero Civique: ' || e_numCiv);
+    dbms_output.put_line('Rue: ' || e_rue);
+    dbms_output.put_line('Code Postal: ' || e_cp);
+    dbms_output.put_line('Ville: ' || e_ville);
+    dbms_output.put_line('Pays: ' || e_pays);
     dbms_output.put_line('Numero de Livraison: ' || num_livraison_c);
     dbms_output.put_line('Date de Livraison: ' || date_livraison_c);
 
 
     DECLARE
+        c_num_livraison    int ;
+        c_type_produit     varchar(20) ;
+        c_prix_vente       varchar(20) ;
+        c_code_zebre       varchar(20) ;
+        c_num_commande     varchar(20);
         CURSOR cur_liste_commande IS
-            SELECT LIVRAISONS.NUMCOMMANDE, CODEZEBRE, PRIXVENTE, TYPEPRODUIT
-            into c_num_commande
+            SELECT LIVRAISONS.NUMLIVRAISON, LIVRAISONS.NUMCOMMANDE, CODEZEBRE, PRIXVENTE, TYPEPRODUIT
+            into c_num_livraison, c_num_commande, c_code_zebre, c_prix_vente, c_type_produit
             FROM LIVRAISONS
-                     inner join COMMANDEPRODUIT C2 on LIVRAISONS.NUMCOMMANDE = C2.NUMCOMMANDE
+                     INNER JOIN COMMANDEPRODUIT C2 on LIVRAISONS.NUMCOMMANDE = C2.NUMCOMMANDE
                      INNER JOIN PRODUIT P on P.NUMREFERENCE = C2.NUMREFERENCE
                      INNER JOIN EXEMPLAIRE E on LIVRAISONS.NUMLIVRAISON = E.NUMLIVRAISON
-            WHERE LIVRAISONS.NUMLIVRAISON = numLivr;
+            WHERE LIVRAISONS.NUMLIVRAISON = 2;
         produits_commandes cur_liste_commande%ROWTYPE;
     BEGIN
         OPEN cur_liste_commande;
@@ -108,13 +123,15 @@ begin
         END LOOP;
         CLOSE cur_liste_commande;
     end;
-  
-    DBMS_OUTPUT.PUT_LINE('Date Limite de paiement : ' || dateLimite);
+
+    DBMS_OUTPUT.PUT_LINE('Date Limite de paiement : ' || dateLimite_c);
     dbms_output.put_line('Prix Sous-Total: ' || prix_soustotal_c);
     dbms_output.put_line('Montant des Taxes: ' || taxes_c);
     dbms_output.put_line('Prix Total: ' || prix_total_c);
 end;
 /
+
+
 
 
 
