@@ -31,8 +31,9 @@ END;
 /
 
 CREATE OR REPLACE TRIGGER Valider_Stock_Commande 
-BEFORE INSERT ON Livraisons 
+BEFORE INSERT ON Livraisons
 FOR EACH ROW
+FOLLOWS Valider_Stock_Produit
 
 DECLARE
 	qqt INTEGER := 0;

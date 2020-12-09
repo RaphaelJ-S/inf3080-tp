@@ -3,23 +3,23 @@ SET ECHO ON;
 --Insertion des données de la table Produit
 INSERT
 INTO Produit
-VALUES(numReference.nextval,1002,'Brosse a dents','Bros', 1.25,TO_DATE('2020-02-03'),4, 15);
+VALUES(2,1002,'Brosse a dents','Bros', 1.25,TO_DATE('2020-02-03'),4, 15);
 
 INSERT
 INTO Produit
-VALUES(numreference.nextval, 1002, 'Brosse a cheveux','Bros', 2.82,TO_DATE('1920-11-23'), 15, 5);
+VALUES(3, 1002, 'Brosse a cheveux','Bros', 2.82,TO_DATE('1920-11-23'), 15, 5);
 
 INSERT
 INTO Produit
-VALUES(numReference.nextval, 15, 'Pillules pour bobo', 'Pill', 12.02,TO_DATE('2004-08-11'), 23, 54);
+VALUES(4, 15, 'Pillules pour bobo', 'Pill', 12.02,TO_DATE('2004-08-11'), 23, 54);
 
 INSERT
 INTO Produit
-VALUES(numReference.nextval, 1534, 'Coupe ongle', 'Coup', 0.95, TO_DATE('1987-12-25'), 2,12);
+VALUES(5, 1534, 'Coupe ongle', 'Coup', 0.95, TO_DATE('1987-12-25'), 2,12);
 
 INSERT
 INTO Produit
-VALUES(numReference.nextval, 425, 'Couche pour adulte', 'Couc', 25.34, TO_DATE('2011-01-12'), 43, 123);
+VALUES(6, 425, 'Couche pour adulte', 'Couc', 25.34, TO_DATE('2011-01-12'), 43, 123);
 
 --Insertion des données de la table Adresse
 INSERT
@@ -46,47 +46,47 @@ VALUES('G6Z-3T1', 'CHN', 56789, 'Zhouqing', 'Wang');
 
 INSERT
 INTO Individu
-VALUES(codeIndividu.nextval, '(514)-123-1234','Secret','H2S-3T1');
+VALUES(2, '(514)-123-1234','Secret','H2S-3T1');
 
 INSERT
 INTO Individu
-VALUES(codeIndividu.nextval, '(438)-098-8765','secret1', 'A5B-3T1');
+VALUES(3, '(438)-098-8765','secret1', 'A5B-3T1');
 
 INSERT
 INTO Individu
-VALUES(codeIndividu.nextval, '(450)-534-8745','secret2', 'B1C-3T1');
+VALUES(4, '(450)-534-8745','secret2', 'B1C-3T1');
 
 INSERT
 INTO Individu
-VALUES(codeIndividu.nextval, '(800)-164-8934','Secret3', 'H2S-3T1');
+VALUES(5, '(800)-164-8934','Secret3', 'H2S-3T1');
 
 INSERT
 INTO Individu
-VALUES(codeIndividu.nextval, '(514)-435-1458','Secret4', 'G6Z-3T1');  
+VALUES(6, '(514)-435-1458','Secret4', 'G6Z-3T1');  
 
 INSERT
 INTO Individu
-VALUES(codeIndividu.nextval, '(514)-524-6454', 'Secret5', 'G6Z-3T1');
+VALUES(7, '(514)-524-6454', 'Secret5', 'G6Z-3T1');
 
 INSERT
 INTO Individu
-VALUES(codeIndividu.nextval, '(450)-156-8797', 'Secret6', 'B1C-3T1');
+VALUES(8, '(450)-156-8797', 'Secret6', 'B1C-3T1');
 
 INSERT
 INTO Individu
-VALUES(codeIndividu.nextval, '(438)-003-5438', 'Secret7', 'H2S-3T1');
+VALUES(9, '(438)-003-5438', 'Secret7', 'H2S-3T1');
 
 INSERT
 INTO Individu
-VALUES(codeIndividu.nextval, '(514)-233-5349', 'Secret8', 'H2S-3T1');
+VALUES(10, '(514)-233-5349', 'Secret8', 'H2S-3T1');
 
 INSERT
 INTO Individu
-VALUES(codeIndividu.nextval, '(438)-665-4368', 'Secret9', 'A5B-3T1');
+VALUES(11, '(438)-665-4368', 'Secret9', 'A5B-3T1');
 
 INSERT
 INTO Individu
-VALUES(codeIndividu.nextval, '(514)-583-1523', 'Secret10', 'B1C-3T1');
+VALUES(12, '(514)-583-1523', 'Secret10', 'B1C-3T1');
 
 --Insertions des données de la table Client
 
@@ -159,23 +159,23 @@ VALUES(11,6,1);
 
 INSERT
 INTO Commande
-VALUES(numCommande.nextval, TO_DATE('1912-04-01'), 'livrer', 2);
+VALUES(2, TO_DATE('1912-04-01'), 'livrer', 2);
 
 INSERT
 INTO Commande
-VALUES(numCommande.nextval, TO_DATE('2001-09-30'), 'livrer', 3);
+VALUES(3, TO_DATE('2001-09-30'), 'livrer', 3);
 
 INSERT
 INTO Commande
-VALUES(numCommande.nextval, TO_DATE('2020-10-12'), 'preparer', 4);
+VALUES(4, TO_DATE('2020-10-12'), 'preparer', 4);
 
 INSERT
 INTO Commande
-VALUES(numCommande.nextval, TO_DATE('2020-01-01'), 'livrer', 5);
+VALUES(5, TO_DATE('2020-01-01'), 'livrer', 5);
 
 INSERT
 INTO Commande
-VALUES(numCommande.nextval, TO_DATE('2019-12-25'), 'preparer', 6);
+VALUES(6, TO_DATE('2019-12-25'), 'preparer', 6);
 
 --Insertion des données de la table CommandeProduit
 
@@ -203,23 +203,23 @@ VALUES(6,2,122);
 
 INSERT
 INTO Livraisons
-VALUES(numlivraisons.nextval, 2, 6, TO_DATE('2019-05-04'), TO_DATE('2019-05-07'), 4); 
+VALUES(2, 2, 6, TO_DATE('2019-05-04'), TO_DATE('2019-05-07'), 4); 
 
 INSERT
 INTO Livraisons
-VALUES(numLivraisons.nextval, 4,4, TO_DATE('2018-02-23'), TO_DATE('2018-03-01'), 4);
+VALUES(3, 4,4, TO_DATE('2018-02-23'), TO_DATE('2018-03-01'), 4);
 
 INSERT
 INTO Livraisons
-VALUES(numlivraisons.nextval, 5,3, TO_DATE('2020-11-02'), TO_DATE('2020-11-02'), 6);
+VALUES(4, 5,3, TO_DATE('2020-11-02'), TO_DATE('2020-11-02'), 6);
 
 INSERT
 INTO Livraisons
-VALUES(numlivraisons.nextval, 6,2, TO_DATE('1999-06-16'), TO_DATE('2020-02-02'), 100);
+VALUES(5, 6,2, TO_DATE('1999-06-16'), TO_DATE('2020-02-02'), 100);
 
 INSERT
 INTO Livraisons
-VALUES(numlivraisons.nextval, 6,2, TO_DATE('2020-12-03'), TO_DATE('2020-12-04'), 20);
+VALUES(6, 6,2, TO_DATE('2020-12-03'), TO_DATE('2020-12-04'), 20);
 
 --Insertions des données de la table Exemplaire
 
@@ -270,23 +270,23 @@ VALUES(6, 1000, 1.15, 1150, 'paye partiel', TO_DATE('2020-05-05'), 6);
 
 INSERT
 INTO Paiement
-Values(numpaiement.nextval, 2, 150, TO_DATE('2020-05-12'), 'CarteCredit'); 
+Values(2, 2, 150, TO_DATE('2020-05-12'), 'CarteCredit'); 
 
 INSERT
 INTO Paiement
-Values(numpaiement.nextval, 3, 115, TO_DATE('2019-12-25'), 'Cheque'); 
+Values(3, 3, 115, TO_DATE('2019-12-25'), 'Cheque'); 
 
 INSERT
 INTO Paiement
-Values(numpaiement.nextval, 4, 25, TO_DATE('2018-01-30'), 'Cheque'); 
+Values(4, 4, 25, TO_DATE('2018-01-30'), 'Cheque'); 
 
 INSERT
 INTO Paiement
-Values(numpaiement.nextval, 5, 325, TO_DATE('2020-09-11'), 'CarteCredit'); 
+Values(5, 5, 325, TO_DATE('2020-09-11'), 'CarteCredit'); 
 
 INSERT
 INTO Paiement
-Values(numpaiement.nextval, 6, 500, TO_DATE('2010-02-22'), 'CarteCredit');
+Values(6, 6, 500, TO_DATE('2010-02-22'), 'CarteCredit');
 
 --Insertions des données de la table Cheque
 
