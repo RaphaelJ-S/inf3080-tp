@@ -43,9 +43,10 @@ CREATE OR REPLACE PROCEDURE ProduireFacture(numLivr IN NUMBER, dateLimite_f IN D
 
 BEGIN
 
+/* Selects des multiples variables de la facture */
+
     SELECT CODEINDIVIDU INTO num_client_c FROM Facture WHERE numLivraison = numLivr;
 
-/* Selects des multiples variables de la facture */
     SELECT codePostal, pays, numCiv, ville, rue
     INTO e_cp, e_pays, e_numCiv, e_ville, e_rue
     FROM Adresse
@@ -75,8 +76,6 @@ BEGIN
 
 -- Début de l'impression de la facture avec tous les éléments sélectionnés précédemment
 
-
-/* Affichage console de la facture */
     dbms_output.put_line('**********Facture Client**********');
     dbms_output.PUT_LINE(' ');
     dbms_output.PUT_LINE(' ');
@@ -95,7 +94,6 @@ BEGIN
 
 -- Utilisation du curseur pour obtenir la liste des produits
 
-/* Affichage de la liste des produits a l'aide du curseur */
     OPEN cur_liste_commande;
     LOOP
         FETCH cur_liste_commande INTO produits_commandes;
@@ -110,7 +108,6 @@ BEGIN
 
 --Impression des dernières information de la facture
 
-/* Affichage console de la facture */
     dbms_output.PUT_LINE(' ');
     DBMS_OUTPUT.PUT_LINE('Date Limite de paiement : ' || dateLimite_c);
     dbms_output.PUT_LINE(' ');
