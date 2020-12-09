@@ -1,5 +1,7 @@
 set echo on;
 
+/* Trigger pour la validation de stock valide dans l'inventaire (Table Produit) */
+
 CREATE OR REPLACE TRIGGER Valider_Stock_Produit
 BEFORE INSERT ON Livraisons 
 FOR EACH ROW
@@ -8,7 +10,7 @@ DECLARE
 	qqt INTEGER := 0;
 
 BEGIN
-	
+	/* Variable qqt qui sert de comparaison pour la valeur limite de stock */
 	SELECT stock
 	INTO qqt
 	FROM Produit
@@ -20,6 +22,8 @@ BEGIN
 END;
 /
 
+/* Trigger pour actualiser le stock dans la table Produit */
+
 CREATE OR REPLACE TRIGGER Actualiser_Stock_Produit
 AFTER INSERT ON Livraisons 
 FOR EACH ROW
@@ -30,6 +34,8 @@ BEGIN
 END;
 /
 
+/* Trigger pour la validation stock commande reste inferieur au stock en inventaire */
+
 CREATE OR REPLACE TRIGGER Valider_Stock_Commande 
 BEFORE INSERT ON Livraisons
 FOR EACH ROW
@@ -39,7 +45,7 @@ DECLARE
 	qqt INTEGER := 0;
 
 BEGIN
-	
+	/* Variable qqt qui sert de comparaison pour la valeur limite de stock */
 	SELECT nbritems 
 	INTO qqt
 	FROM CommandeProduit
@@ -51,6 +57,7 @@ BEGIN
 END;
 /
 
+/* Trigger pour la validation de paiement */
 
 CREATE OR REPLACE TRIGGER Valider_Paiement
 BEFORE INSERT ON Paiement 
@@ -60,7 +67,7 @@ DECLARE
 	montantFacture number(10,2) := 0;
 
 BEGIN
-  
+  /* Variable montantFacture qui sert de comparaison pour la valeur limite de paiement */
 	SELECT prixTotal 
   INTO montantFacture 
   FROM Facture 
