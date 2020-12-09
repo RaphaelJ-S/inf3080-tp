@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 -- ===========================================
 -- Procédure:  ProduireFacture
--- Description: Imprime sur le terminal 
+-- Description: Imprime sur le terminal
 -- la facture client d'une livraison
 -- IN : Le numero de livraison
 -- IN : La date limite du paiement de la facture
@@ -9,27 +8,16 @@
 
 CREATE OR REPLACE PROCEDURE ProduireFacture(numLivr IN NUMBER, dateLimite_f in date)
     is
-    
--- Déclaration des variables 
-    num_client_c       NUMBER(20);
-    nom_client_c       VARCHAR(50);
-    prenom_client_c    VARCHAR(50);
-    num_livraison_c    NUMBER(20);
-=======
-/* Procedure d'affichage de la facture */
-create or replace procedure ProduireFacture(numLivr in number, dateLimite_f in date)
-    is
-/* Initialisation des variables temporaires/locales */
+
+-- Déclaration des variables
     num_client_c       number(20);
     nom_client_c       varchar(50);
     prenom_client_c    varchar(50);
     num_livraison_c    number(20);
->>>>>>> a7b044b2dcc498f79e027a5a05c09c45f3f587a9
     date_livraison_c   date;
     prix_soustotal_c   NUMBER(10, 2);
     dateLimite_c       date;
-<<<<<<< HEAD
-    
+
     e_rue              VARCHAR(10) ;
     e_ville            VARCHAR(10) ;
     e_numCiv           VARCHAR(10) ;
@@ -40,10 +28,9 @@ create or replace procedure ProduireFacture(numLivr in number, dateLimite_f in d
     c_prix_vente       VARCHAR(20) ;
     c_code_zebre       VARCHAR(20) ;
     c_num_commande     VARCHAR(20);
-    
-    -- Déclaration du curseur qui va parcourir les produits de la livraisons dans les 
+
+    -- Déclaration du curseur qui va parcourir les produits de la livraisons dans les
     -- differentes commandes
-=======
     e_rue              varchar(10) ;
     e_ville            varchar(10) ;
     e_numCiv           varchar(10) ;
@@ -55,43 +42,30 @@ create or replace procedure ProduireFacture(numLivr in number, dateLimite_f in d
     c_code_zebre       varchar(20) ;
     c_num_commande     varchar(20);
 /* Initialisation du curseurs pour la liste des produits */
->>>>>>> a7b044b2dcc498f79e027a5a05c09c45f3f587a9
     CURSOR cur_liste_commande IS
         SELECT LIVRAISONS.NUMLIVRAISON, LIVRAISONS.NUMCOMMANDE, CODEZEBRE, PRIXVENTE, TYPEPRODUIT
         INTO c_num_livraison, c_num_commande, c_code_zebre, c_prix_vente, c_type_produit
         FROM LIVRAISONS
-<<<<<<< HEAD
-                 INNER JOIN COMMANDEPRODUIT C2 ON LIVRAISONS.NUMCOMMANDE = C2.NUMCOMMANDE
-                 INNER JOIN PRODUIT P ON P.NUMREFERENCE = C2.NUMREFERENCE
-                 INNER JOIN EXEMPLAIRE E ON LIVRAISONS.NUMLIVRAISON = E.NUMLIVRAISON
-=======
         /* Jointure de plusieurs tables pour regrouper les differentes informations */
                  INNER JOIN COMMANDEPRODUIT C2 on LIVRAISONS.NUMCOMMANDE = C2.NUMCOMMANDE
                  INNER JOIN PRODUIT P on P.NUMREFERENCE = C2.NUMREFERENCE
                  INNER JOIN EXEMPLAIRE E on LIVRAISONS.NUMLIVRAISON = E.NUMLIVRAISON
->>>>>>> a7b044b2dcc498f79e027a5a05c09c45f3f587a9
         WHERE LIVRAISONS.NUMLIVRAISON = numLivr;
     produits_commandes cur_liste_commande%ROWTYPE;
 
 BEGIN
-<<<<<<< HEAD
-
-                 
 
     SELECT CODEINDIVIDU INTO num_client_c FROM Facture WHERE numLivraison = numLivr;
-    
--- Select l'adresse complete de l'individu a qui la livraison est associée
-=======
+
 /* Selects des multiples variables de la facture */
->>>>>>> a7b044b2dcc498f79e027a5a05c09c45f3f587a9
     SELECT codePostal, pays, numCiv, ville, rue
     INTO e_cp, e_pays, e_numCiv, e_ville, e_rue
     FROM Adresse
     WHERE codepostal =
           (SELECT codePostal
            FROM INDIVIDU
-           WHERE CODEINDIVIDU = num_client_c;
-           
+           WHERE CODEINDIVIDU = num_client_c);
+
     SELECT nom
     INTO nom_client_c
     FROM Client
@@ -105,19 +79,16 @@ BEGIN
     SELECT numLivraison INTO num_livraison_c FROM Facture WHERE numLivraison = numLivr;
 
     SELECT DATELIVRAISON INTO date_livraison_c FROM LIVRAISONS WHERE numLivraison = numLivr;
-    
+
     SELECT prixSousTotal INTO prix_soustotal_c FROM Facture WHERE numLivraison = numLivr;
 
     SELECT datePayerLim INTO dateLimite_c FROM FACTURE WHERE datePayerLim = dateLimite_f;
-<<<<<<< HEAD
 
 
 -- Début de l'impression de la facture avec tous les éléments sélectionnés précédemment
 
-=======
-                  
+
 /* Affichage console de la facture */
->>>>>>> a7b044b2dcc498f79e027a5a05c09c45f3f587a9
     dbms_output.put_line('**********Facture Client**********');
     dbms_output.PUT_LINE(' ');
     dbms_output.PUT_LINE(' ');
@@ -133,13 +104,10 @@ BEGIN
     dbms_output.put_line('Numero de Livraison: ' || num_livraison_c);
     dbms_output.put_line('Date de Livraison: ' || date_livraison_c);
     dbms_output.PUT_LINE(' ');
-<<<<<<< HEAD
 
 -- Utilisation du curseur pour obtenir la liste des produits
-=======
-                  
+
 /* Affichage de la liste des produits a l'aide du curseur */
->>>>>>> a7b044b2dcc498f79e027a5a05c09c45f3f587a9
     OPEN cur_liste_commande;
     LOOP
         FETCH cur_liste_commande INTO produits_commandes;
@@ -151,13 +119,10 @@ BEGIN
         EXIT WHEN cur_liste_commande%NOTFOUND;
     END LOOP;
     CLOSE cur_liste_commande;
-<<<<<<< HEAD
 
 --Impression des dernières information de la facture
-=======
-                  
+
 /* Affichage console de la facture */
->>>>>>> a7b044b2dcc498f79e027a5a05c09c45f3f587a9
     dbms_output.PUT_LINE(' ');
     DBMS_OUTPUT.PUT_LINE('Date Limite de paiement : ' || dateLimite_c);
     dbms_output.PUT_LINE(' ');
