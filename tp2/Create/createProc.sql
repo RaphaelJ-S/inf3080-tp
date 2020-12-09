@@ -6,18 +6,17 @@
 -- IN : La date limite du paiement de la facture
 -- ===========================================
 
-CREATE OR REPLACE PROCEDURE ProduireFacture(numLivr IN NUMBER, dateLimite_f in date)
-    is
+CREATE OR REPLACE PROCEDURE ProduireFacture(numLivr IN NUMBER, dateLimite_f IN DATE)
+    IS
 
 -- Déclaration des variables
     num_client_c       number(20);
     nom_client_c       varchar(50);
     prenom_client_c    varchar(50);
     num_livraison_c    number(20);
-    date_livraison_c   date;
+    date_livraison_c   DATE;
     prix_soustotal_c   NUMBER(10, 2);
     dateLimite_c       date;
-
     e_rue              VARCHAR(10) ;
     e_ville            VARCHAR(10) ;
     e_numCiv           VARCHAR(10) ;
@@ -31,17 +30,6 @@ CREATE OR REPLACE PROCEDURE ProduireFacture(numLivr IN NUMBER, dateLimite_f in d
 
     -- Déclaration du curseur qui va parcourir les produits de la livraisons dans les
     -- differentes commandes
-    e_rue              varchar(10) ;
-    e_ville            varchar(10) ;
-    e_numCiv           varchar(10) ;
-    e_pays             varchar(10) ;
-    e_cp               varchar(10) ;
-    c_num_livraison    int ;
-    c_type_produit     varchar(20) ;
-    c_prix_vente       varchar(20) ;
-    c_code_zebre       varchar(20) ;
-    c_num_commande     varchar(20);
-/* Initialisation du curseurs pour la liste des produits */
     CURSOR cur_liste_commande IS
         SELECT LIVRAISONS.NUMLIVRAISON, LIVRAISONS.NUMCOMMANDE, CODEZEBRE, PRIXVENTE, TYPEPRODUIT
         INTO c_num_livraison, c_num_commande, c_code_zebre, c_prix_vente, c_type_produit
