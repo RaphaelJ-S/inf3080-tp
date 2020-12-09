@@ -15,7 +15,8 @@ BEGIN
 	INTO qqt
 	FROM Produit
  	WHERE numReference = :NEW.numreference;
-
+	
+        /* Si le nombre d'item est superieur a qqt, on lance une erreur systeme */
 	IF :NEW.nbritems > qqt THEN 
 		raise_application_error(-20101, 'Nombre commande superieur au stock existant.');
 	END IF;
@@ -51,6 +52,7 @@ BEGIN
 	FROM CommandeProduit
 	WHERE numReference = :NEW.numreference AND numCommande = :NEW.numCommande;
 
+        /* Si le nombre d'item est superieur a qqt, on lance une erreur systeme */
 	IF :NEW.nbritems > qqt THEN 
 		raise_application_error(-20102, 'Nombre commande est superieur au stock de la commande.');
 	END IF;
@@ -72,7 +74,8 @@ BEGIN
   INTO montantFacture 
   FROM Facture 
   WHERE Facture.numLivraison = :NEW.numLivraison;
-	
+  
+	/* Si le montant de paiement est superieur au montantFacture, on lance une erreur systeme */
 	IF :NEW.montant > montantFacture THEN 
     raise_application_error(-20103, 'Montant du paiement est superieur au montant de la facture');
 	END IF;
