@@ -1,33 +1,51 @@
-create or replace function QuantiteDejaLivree(numRef in number, numCom in number)
-return number 
-is
-    num_livr    number(20);
-    date_livr   date;
-    nbr_items_c number(20) := 0;
+-- ============================================ 
+-- Fonction:  QuantiteDejaLivree
+-- Description: Retourne la quantitee livree d'un article 
+-- précis dans une commande
+-- IN NUMBER : Numero de référence d'un produit
+-- IN NUMBER : Numero de commande dans lequel on cherche
+-- RETOUR NUMBER : Le nombre d'items deja livre
+-- ============================================
 
-begin
-    select NUMLIVRAISON into num_livr from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;
-    select DATELIVRAISON into date_livr from LIVRAISONS where NUMLIVRAISON = num_livr;
-    if date_livr < SYSDATE THEN
-        select NBRITEMS into nbr_items_c from LIVRAISONS Where numCommande = numCom and NUMREFERENCE = numRef;
-        return nbr_items_c;
+CREATE OR REPLACE FUNCTION QuantiteDejaLivree(numRef IN NUMBER, numCom IN NUMBER)
+RETURN NUMBER 
+IS
+    num_livr    NUMBER(20);
+    date_livr   DATE;
+    nbr_items_c NUMBER(20) := 0;
+
+BEGIN
+    SELECT NUMLIVRAISON INTO num_livr FROM LIVRAISONS WHERE numCommande = numCom AND NUMREFERENCE = numRef;
+    SELECT DATELIVRAISON INTO date_livr FROM LIVRAISONS WHERE NUMLIVRAISON = num_livr;
+    /*Vérification que la date de livraison soit dans le passee*/
+    IF date_livr < SYSDATE THEN
+        SELECT NBRITEMS INTO nbr_items_c FROM LIVRAISONS WHERE numCommande = numCom AND NUMREFERENCE = numRef;
+        /*Retourne le nombre d'items associe a la commande et numero reference*/
+        RETURN nbr_items_c;
     END IF;
-end;
+END;
 /
 
+-- ============================================ 
+-- Fonction:  TotalFacture
+-- Description: Retourne le total de la facture donnée
+-- en parametre
+-- IN NUMBER : le numero de facture que l'on cherche le total
+-- RETOUR NUMBER : Le total de la facture
+-- ============================================
 
-create or replace function TotalFacture(numFac in number)
-return number
-is
-    montant_total_c number(10, 2) := 0;
-begin
-
-    select prixTotal
-    into montant_total_c
-    from Facture
-    where numFac = numLivraison;
-    return montant_total_c;
-end;
+CREATE OR REPLACE FUNCTION TotalFacture(numFac IN NUMBER)
+RETURN NUMBER
+IS
+    montant_total_c NUMBER(10, 2) := 0;
+BEGIN
+    SELECT prixTotal
+    INTO montant_total_c
+    FROM Facture
+    WHERE numFac = numLivraison;
+    /*Retourne le prixTotal de la facture en parametre*/
+    RETURN montant_total_c;
+END;
 /
 
 
